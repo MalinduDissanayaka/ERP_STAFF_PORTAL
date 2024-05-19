@@ -1,0 +1,161 @@
+﻿@using ERP_ModuleManagement.DTOs.Response
+@using System.Net.Http.Json
+@using MudBlazor
+@inject NavigationManager NavigationManager
+@inject IDialogService DialogService
+@inject ISnackbar Snackbar
+
+
+@if (_modules.Count > 0)
+{
+    <MudTable Items="@_modules">
+        <HeaderContent>
+            <MudTh>Module Name</MudTh>
+            <MudTh>Module Code</MudTh>
+            <MudTh>Module Coordinator</MudTh>
+            <MudTh>Semester</MudTh>
+            <MudTh>Lecturers</MudTh>
+
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Module Name">@context.ModuleName</MudTd>
+            <MudTd DataLabel="module Code">@context.ModuleCode</MudTd>
+            <MudTd DataLabel="Module Coordinator">@context.ModuleCoordineter</MudTd>
+            <MudTd DataLabel="Semester">@context.Semester</MudTd>
+            <MudTd DataLabel="Lecturers">@context.Lectures</MudTd>
+            <MudTd DataLabel="">
+                <div class="button-group">
+                    <MudFab Color="Color.Secondary" OnClick="@(()=>ShowModule(context.ModuleId))"
+                            StartIcon="@Icons.Material.Filled.Person" Size="Size.Small" />
+                    <MudFab Color="Color.Primary" OnClick="@(()=>EditModule(context.ModuleId))"
+                            StartIcon="@Icons.Material.Filled.Edit" Size="Size.Small" />
+                    <MudFab Color="Color.Warning" OnClick="@(()=>DeleteModule(context.ModuleId))"
+                            StartIcon="@Icons.Material.Filled.Delete" Size="Size.Small" />
+                </div>
+            </MudTd>
+        </RowTemplate>
+        <PagerContent>
+            <MudTablePager />
+        </PagerContent>
+
+    </MudTable>
+}
+else
+{
+    <MudProgressLinear Color="Color.Primary" Size="Size.Large" Indeterminate="true" Class="my-7" />
+}
+
+
+
+
+<MudMessageBox @ref="mbox" Title="Warning" CancelText="Cancel">
+    <MessageContent>
+        Are You Sure to Delete This Module!
+    </MessageContent>
+    <YesButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Error" StartIcon="@Icons.Material.Filled.DeleteForever">Delete!</MudButton>
+    </YesButton>
+</MudMessageBox>
+
+@code {
+    private string buttonGroupStyle = "display: flex; gap: 8px;";
+
+
+    private HttpClient Http = new HttpClient();
+
+    MudMessageBox mbox { get; set; }
+
+    public EventCallback onDelete { get; set; }
+
+    private List<GetModuleResponse> _modules = new List<GetModuleResponse>();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            _modules = await Http.GetFromJsonAsync<List<GetModuleResponse>>("https://localhost:7103/api/Module/");
+        }
+        catch (Exception ex)
+        {
+            _modules = null;
+        }
+    }
+
+    async Task ShowModule(Guid moduleId)
+    {
+        var parameters = new DialogParameters<ModuleProfileDialog> { { x => x.ModuleId, moduleId } };
+
+
+        var options = new DialogOptions
+            {
+                MaxWidth = MaxWidth.ExtraSmall,
+                FullWidth = true,
+                Position = DialogPosition.Center,
+                CloseOnEscapeKey = true,
+                CloseButton = true
+            };
+
+        var dialog = await DialogService.ShowAsync<ModuleProfileDialog>("Module Profile", parameters, options);
+
+    }
+
+
+    async Task EditModule(Guid moduleId)
+    {
+        var parameters = new DialogParameters<EditModuleDialog> { { x => x.moduleId, moduleId } };
+
+        var options = new DialogOptions
+            {
+                MaxWidth = MaxWidth.ExtraSmall,
+                FullWidth = true,
+                Position = DialogPosition.CenterLeft,
+                CloseOnEscapeKey = true,
+                CloseButton = true
+            };
+
+        var dialog = await DialogService.ShowAsync<EditModuleDialog>("Save", parameters, options);
+        var result = await dialog.Result;
+
+        if (!result.Canceled)
+        {
+            _modules = await Http.GetFromJsonAsync<List<GetModuleResponse>>("https://localhost:7103/api/Module/");
+        }
+    }
+
+
+
+    async Task DeleteModule(Guid moduleId)
+    {
+        bool? result = await mbox.Show();
+        if (result == true)
+        {
+            var response = await Http.DeleteAsync($"https://localhost:7103/api/Module/{moduleId}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                Snackbar.Add("Module Deleted Successfully", Severity.Success);
+                _modules = await Http.GetFromJsonAsync<List<GetModuleResponse>>("https://localhost:7103/api/Module/");
+                StateHasChanged();
+            }
+            else
+            {
+                Snackbar.Add("Connection error. Module is not deleted.", Severity.Error);
+            }
+
+        }
+        else
+        {
+            Snackbar.Add("Module is Not Deleted", Severity.Info);
+        }
+
+
+    }
+
+
+}
+<h3>ModuleList</h3>
+
+@code {
+
+}

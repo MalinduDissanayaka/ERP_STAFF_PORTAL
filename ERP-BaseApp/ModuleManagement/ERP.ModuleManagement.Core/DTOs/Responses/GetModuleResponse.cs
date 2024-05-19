@@ -10,7 +10,6 @@ namespace ERP.ModuleManagement.Core.DTOs.Responses
     {
         public Guid ModuleId { get; set; }
         public string ModuleName { get; set; } = string.Empty;
-
         public string ModuleCode { get; set; } = string.Empty;
         public string Semester { get; set; } = string.Empty;
         public string ModuleCoordineter { get; set; } = string.Empty;
