@@ -70,7 +70,8 @@ namespace ERP.ModuleManagement.DataSevices.Repositories
                 result.UpdateDate = DateTime.UtcNow;
                 result.ModuleName = module.ModuleName;
                 result.ModuleCode = module.ModuleCode;
-                result.ModuleCoordineter = module.ModuleCoordineter;
+                result.Semester = module.Semester;
+                result.ModuleCoordineter = module.ModuleCoordineter;               
                 result.Lectures = module.Lectures;
               ;
 

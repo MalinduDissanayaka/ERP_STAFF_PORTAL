@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ERP.ModuleManagement.Core.DTOs.Requests
+namespace ERP_ModuleManagement.DTOs.Response
 {
-    public class UpdateModuleRequest
+    public class GetModuleResponse
     {
         public Guid ModuleId { get; set; }
         public string ModuleName { get; set; } = string.Empty;
+
         public string ModuleCode { get; set; } = string.Empty;
         public string Semester { get; set; } = string.Empty;
         public string ModuleCoordineter { get; set; } = string.Empty;

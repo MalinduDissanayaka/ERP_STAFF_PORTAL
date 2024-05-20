@@ -1,0 +1,85 @@
+﻿@using ERP_ModuleManagement.DTOs.Request
+@using FluentValidation
+@using MudBlazor
+@using System.Net.Http.Json
+@using System.Text;
+@using System.Text.Json;
+@inject ISnackbar Snackbar
+
+<MudDialog>
+    <TitleContent>
+        <MudText Typo="Typo.h6">
+            <MudIcon Icon="@Icons.Material.Filled.DeleteForever" Class="mr-3 mb-n1" />
+            Edit Module
+        </MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudTextField @bind-Value="_module.ModuleId" Label="Module ID" ReadOnly="true" />
+        <MudTextField @bind-Value="_module.ModuleName" Label="Module Name" />
+        <MudTextField @bind-Value="_module.ModuleCode" Label="Module Code" />
+        <MudTextField @bind-Value="_module.Semester" Label="Semester" />
+        <MudTextField @bind-Value="_module.ModuleCoordineter" Label="Module Cordinater" />
+        <MudTextField @bind-Value="_module.Lectures" Label="Lectures" />
+        
+           
+      
+        
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Error" OnClick="SaveModule">Save</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; }
+
+    [Parameter]
+    public Guid moduleId { get; set; }
+
+    public EventCallback onAdded { get; set; }
+
+    private HttpClient Http = new HttpClient();
+
+    private UpdateModuleRequest _module = new UpdateModuleRequest();
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            _module = await Http.GetFromJsonAsync<UpdateModuleRequest>($"https://localhost:7103/api/Module/{moduleId}");
+        }
+        catch (Exception ex)
+        {
+            _module = null;
+        }
+    }
+
+    private void Cancel()
+    {
+        MudDialog.Cancel();
+    }
+
+    private async void SaveModule()
+    {
+        var jsonModel = JsonSerializer.Serialize(_module);
+        var content = new StringContent(jsonModel, Encoding.UTF8, "application/json");
+        var response = await Http.PutAsync($"https://localhost:7103/api/Module/{moduleId}", content);
+
+        if (response.IsSuccessStatusCode)
+        {
+            await onAdded.InvokeAsync();
+            Snackbar.Add("Module Edited Successfully", MudBlazor.Severity.Success);
+            MudDialog.Close(DialogResult.Ok(_module.ModuleId));
+        }
+        else
+        {
+            Snackbar.Add("Please Check Your Connection.", MudBlazor.Severity.Error);
+        }
+    }
+
+   
+}

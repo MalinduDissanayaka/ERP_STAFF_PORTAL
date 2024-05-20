@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ERP-StudentManagement", "ER
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ERP-LecturersMangement", "ERP-LecturersMangement\ERP-LecturersMangement.csproj", "{D4A91BC3-E377-41D7-8D39-E2CF92273EB0}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ERP-ModuleManagement", "ERP-ModuleManagement\ERP-ModuleManagement.csproj", "{B3F63BE0-A79E-4F41-AB73-8B22808FA1A7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{D4A91BC3-E377-41D7-8D39-E2CF92273EB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D4A91BC3-E377-41D7-8D39-E2CF92273EB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D4A91BC3-E377-41D7-8D39-E2CF92273EB0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3F63BE0-A79E-4F41-AB73-8B22808FA1A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3F63BE0-A79E-4F41-AB73-8B22808FA1A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3F63BE0-A79E-4F41-AB73-8B22808FA1A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3F63BE0-A79E-4F41-AB73-8B22808FA1A7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

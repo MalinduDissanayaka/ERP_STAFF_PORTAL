@@ -17,6 +17,7 @@
   
 	<ItemGroup>
 		<ProjectReference Include="..\ERP-LecturersMangement\ERP-LecturersMangement.csproj" />
+		<ProjectReference Include="..\ERP-ModuleManagement\ERP-ModuleManagement.csproj" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\ERP-StudentManagement\ERP-StudentManagement.csproj" />
