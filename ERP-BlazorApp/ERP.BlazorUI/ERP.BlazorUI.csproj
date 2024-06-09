@@ -31,6 +31,11 @@
 		<ProjectReference Include="..\ERP-LabEquipmentManagement\ERP-LabEquipmentManagement.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+
+		<ProjectReference Include="..\Lib\ERP-StudentRegistration\ERP-StudentRegistration.csproj" />
+	</ItemGroup>
+
 
 
 
