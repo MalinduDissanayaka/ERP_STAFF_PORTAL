@@ -6,12 +6,9 @@ using System.Threading.Tasks;
 
 namespace ERP.UserManagement.Core.Entities
 {
-    public class Students : BaseEntity
+    public class Lecturer : BaseEntity
     {
-        //public Lecturer()
-        //{
-        //    Advicees = new HashSet<Lecturer>();
-        //}
+       
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
 
@@ -25,7 +22,7 @@ namespace ERP.UserManagement.Core.Entities
 
         public DateTime DoB { get; set; }
 
-       // public virtual ICollection<Lecturer>? Advicees { get; set; }
+       
     
-}
+    }
 }
