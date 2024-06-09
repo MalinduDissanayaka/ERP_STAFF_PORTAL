@@ -31,7 +31,7 @@ namespace ERP.UserManagement.Api.Tests.Controllers
         public async Task GetAllLecturers_ShouldReturnOkResponse_WhenDataFound()
         {
             //Arange
-            var lecturerMock = _fixture.Create<IEnumerable<Students>>();
+            var lecturerMock = _fixture.Create<IEnumerable<Lecturer>>();
             object value = _mock.Setup(x => x.Lecturers.GetAllAsync()).ReturnsAsync(lecturerMock);
 
             var lecturerListMock = _fixture.Create<IEnumerable<GetLecturersResponse>>();
@@ -54,7 +54,7 @@ namespace ERP.UserManagement.Api.Tests.Controllers
         public async Task GetAllLecturers_ShouldReturnNotFound_WhenNoDataFound()
         {
             //Arange
-            List<Students> response = null;
+            List<Lecturer> response = null;
             object value = _mock.Setup(x => x.Lecturers.GetAllAsync()).ReturnsAsync(response);
 
             //Act
@@ -73,7 +73,7 @@ namespace ERP.UserManagement.Api.Tests.Controllers
         public async Task GetLecturer_ShouldReturnOkResponse_WhenDataFound()
         {
             //Arange
-            var lecturerMock = _fixture.Create<Students>();
+            var lecturerMock = _fixture.Create<Lecturer>();
             var lecturerId = _fixture.Create<Guid>();
             object value = _mock.Setup(x => x.Lecturers.GetAsync(lecturerId)).ReturnsAsync(lecturerMock);
 
@@ -96,7 +96,7 @@ namespace ERP.UserManagement.Api.Tests.Controllers
         public async Task GetLecturer_ShouldReturnNotFound_WhenNoDataFound()
         {
             //Arange
-            Students response = null;
+            Lecturer response = null;
             var lecturerId = _fixture.Create<Guid>();
             object value = _mock.Setup(x => x.Lecturers.GetAsync(lecturerId)).ReturnsAsync(response);
 
@@ -116,9 +116,9 @@ namespace ERP.UserManagement.Api.Tests.Controllers
         {
             //Arange
             var request = _fixture.Create<CreateLecturerRequest>();
-            var response = _fixture.Create<Students>();
+            var response = _fixture.Create<Lecturer>();
 
-            _mockMapper.Setup(x => x.Map<Students>(request)).Returns(response);
+            _mockMapper.Setup(x => x.Map<Lecturer>(request)).Returns(response);
             _mock.Setup(x => x.Lecturers.AddAsync(response)).ReturnsAsync(true);
             _mock.Setup(x => x.CompleteAsync()).ReturnsAsync(true);
 
@@ -128,7 +128,7 @@ namespace ERP.UserManagement.Api.Tests.Controllers
             //Assert
             result.Should().NotBeNull();
             result.Should().BeAssignableTo<CreatedAtActionResult>();
-            _mockMapper.Verify(x => x.Map<Students>(request), Times.Once);
+            _mockMapper.Verify(x => x.Map<Lecturer>(request), Times.Once);
             _mock.Verify(x => x.Lecturers.AddAsync(response), Times.Once);
             _mock.Verify(x => x.CompleteAsync(), Times.Once);
 
@@ -140,9 +140,9 @@ namespace ERP.UserManagement.Api.Tests.Controllers
             //Arange
             var request = _fixture.Create<CreateLecturerRequest>();
             _controller.ModelState.AddModelError("FirstName", "The FirstName field is required.");
-            var response = _fixture.Create<Students>();
+            var response = _fixture.Create<Lecturer>();
 
-            _mockMapper.Setup(x => x.Map<Students>(request)).Returns(response);
+            _mockMapper.Setup(x => x.Map<Lecturer>(request)).Returns(response);
             _mock.Setup(x => x.Lecturers.AddAsync(response)).ReturnsAsync(true);
             _mock.Setup(x => x.CompleteAsync()).ReturnsAsync(true);
 
@@ -152,7 +152,7 @@ namespace ERP.UserManagement.Api.Tests.Controllers
             //Assert
             result.Should().NotBeNull();
             result.Should().BeAssignableTo<BadRequestResult>();
-            _mockMapper.Verify(x => x.Map<Students>(request), Times.Never);
+            _mockMapper.Verify(x => x.Map<Lecturer>(request), Times.Never);
             _mock.Verify(x => x.Lecturers.AddAsync(response), Times.Never);
             _mock.Verify(x => x.CompleteAsync(), Times.Never);
 
@@ -166,7 +166,7 @@ namespace ERP.UserManagement.Api.Tests.Controllers
             //Arange
 
             var lecturerId = _fixture.Create<Guid>();
-            var response = _fixture.Create<Students>();
+            var response = _fixture.Create<Lecturer>();
 
             _mock.Setup(x => x.Lecturers.GetAsync(lecturerId)).ReturnsAsync(response);
             _mock.Setup(x => x.Lecturers.DeleteAsync(lecturerId)).ReturnsAsync(true);
@@ -190,7 +190,7 @@ namespace ERP.UserManagement.Api.Tests.Controllers
             //Arange
 
             var lecturerId = _fixture.Create<Guid>();
-            Students lecturerResponce = null;
+            Lecturer lecturerResponce = null;
 
             _mock.Setup(x => x.Lecturers.GetAsync(lecturerId)).ReturnsAsync(lecturerResponce);
 
@@ -214,7 +214,7 @@ namespace ERP.UserManagement.Api.Tests.Controllers
             //Arange
             var request = _fixture.Create<UpdateLecturerRequest>();
             var lecturerId = _fixture.Create<Guid>();
-            var response = _fixture.Create<Students>();
+            var response = _fixture.Create<Lecturer>();
             _controller.ModelState.AddModelError("FirstName", "The FirstName field is required.");
 
 
@@ -224,7 +224,7 @@ namespace ERP.UserManagement.Api.Tests.Controllers
             //Assert
             result.Should().NotBeNull();
             result.Should().BeAssignableTo<BadRequestObjectResult>();
-            _mockMapper.Verify(x => x.Map<Students>(request), Times.Never);
+            _mockMapper.Verify(x => x.Map<Lecturer>(request), Times.Never);
             _mock.Verify(x => x.Lecturers.UpdateAsync(response), Times.Never);
             _mock.Verify(x => x.CompleteAsync(), Times.Never);
 
@@ -237,9 +237,9 @@ namespace ERP.UserManagement.Api.Tests.Controllers
             //Arange
             var request = _fixture.Create<UpdateLecturerRequest>();
             var lecturerId = _fixture.Create<Guid>();
-            var response = _fixture.Create<Students>();
+            var response = _fixture.Create<Lecturer>();
 
-            _mockMapper.Setup(x => x.Map<Students>(request)).Returns(response);
+            _mockMapper.Setup(x => x.Map<Lecturer>(request)).Returns(response);
             _mock.Setup(x => x.Lecturers.UpdateAsync(response)).ReturnsAsync(true);
             _mock.Setup(x => x.CompleteAsync()).ReturnsAsync(true);
 
@@ -250,7 +250,7 @@ namespace ERP.UserManagement.Api.Tests.Controllers
             //Assert
             result.Should().NotBeNull();
             result.Should().BeAssignableTo<NoContentResult>();
-            _mockMapper.Verify(x => x.Map<Students>(request), Times.Once);
+            _mockMapper.Verify(x => x.Map<Lecturer>(request), Times.Once);
             _mock.Verify(x => x.Lecturers.UpdateAsync(response), Times.Once);
             _mock.Verify(x => x.CompleteAsync(), Times.Once);
 
@@ -262,9 +262,9 @@ namespace ERP.UserManagement.Api.Tests.Controllers
             //Arange
             var request = _fixture.Create<UpdateLecturerRequest>();
             var lecturerId = _fixture.Create<Guid>();
-            var response = _fixture.Create<Students>();
+            var response = _fixture.Create<Lecturer>();
 
-            _mockMapper.Setup(x => x.Map<Students>(request)).Returns(response);
+            _mockMapper.Setup(x => x.Map<Lecturer>(request)).Returns(response);
             _mock.Setup(x => x.Lecturers.UpdateAsync(response)).ReturnsAsync(true);
             _mock.Setup(x => x.CompleteAsync()).ThrowsAsync(new Exception("Database error occurred"));
 
@@ -278,7 +278,7 @@ namespace ERP.UserManagement.Api.Tests.Controllers
             var statusCodeResult = (ObjectResult)result;
             statusCodeResult.StatusCode.Should().Be(500);
             statusCodeResult.Value.Should().Be("An error occurred while updating the Lecturer.");
-            _mockMapper.Verify(x => x.Map<Students>(request), Times.Once);
+            _mockMapper.Verify(x => x.Map<Lecturer>(request), Times.Once);
             _mock.Verify(x => x.Lecturers.UpdateAsync(response), Times.Once);
             _mock.Verify(x => x.CompleteAsync(), Times.Once);
 

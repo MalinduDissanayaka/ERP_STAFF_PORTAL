@@ -46,7 +46,7 @@ namespace ERP.UserManagement.Api.Controllers
                 return BadRequest();
             }
 
-            var result = _mapper.Map<Students>(lecturer);
+            var result = _mapper.Map<Lecturer>(lecturer);
             await _unitOfWorks.Lecturers.AddAsync(result);
             await _unitOfWorks.CompleteAsync();
 
@@ -66,7 +66,7 @@ namespace ERP.UserManagement.Api.Controllers
 
             try
             {
-                var existingLecturer = _mapper.Map<Students>(lecturer);
+                var existingLecturer = _mapper.Map<Lecturer>(lecturer);
                 await _unitOfWorks.Lecturers.UpdateAsync(existingLecturer);
                 await _unitOfWorks.CompleteAsync();
             }

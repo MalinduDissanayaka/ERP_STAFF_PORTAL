@@ -32,7 +32,6 @@ namespace ERP.UserManagement.Core.DTOs.Response
 
         public string Department { get; set; } = string.Empty;
 
-       // public Guid? AdvisorId { get; set; }
-       // public virtual Lecturer? Advisor { get; set; }
+     
     }
 }
