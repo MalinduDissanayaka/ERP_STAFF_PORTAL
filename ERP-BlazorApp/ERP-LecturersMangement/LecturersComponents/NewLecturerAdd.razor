@@ -19,10 +19,11 @@
 
         <h5><c>ADD LECTURERS FROM EXCEL</c></h5>
         <InputFile @ref="fileInput" OnChange="HandleFileUpload" />
+@* 
         @if (teachers != null && teachers.Any())
         {
             <button class="btn btn-primary" @onclick="SaveAllLecturers">Save All Lecturers</button>
-        }
+        } *@
 
         <MudCardContent>
             <MudForm Model="@model" @ref="@form" Validation="@(lecturerValidator.ValidateValue)" ValidationDelay="0">
@@ -38,6 +39,10 @@
                     </MudItem>
                     <MudItem xs="12">
                         <MudTextField @bind-Value="model.Department" Label="Department" Required="true" For="@(() => model.Department)" />
+                    </MudItem>
+                    <MudItem xs="12">
+
+                    <MudTextField @bind-Value="model.NationalId" Label="National ID" Required="true" For="@(() => model.NationalId)" />
                     </MudItem>
                     <MudItem xs="12">
                         <MudTextField @bind-Value="model.DoB" Label="DoB" Required="true" For="@(() => model.DoB)" />
@@ -158,7 +163,7 @@
                                 Email = worksheet.Cells[row, 4].Value?.ToString(),
                                 Phone = worksheet.Cells[row, 5].Value?.ToString(),
                                 NationalId = worksheet.Cells[row, 6].Value?.ToString(),
-                                DoB = DateTime.Parse(worksheet.Cells[row, 7].Value?.ToString() ?? DateTime.MinValue.ToString())
+                                // DoB = DateTime.Parse(worksheet.Cells[row, 7].Value?.ToString() ?? DateTime.MinValue.ToString())
                             };
                         lecturers.Add(model);
                     }
@@ -168,6 +173,7 @@
 
         return lecturers;
     }
+
 
 
     private async Task SaveAllLecturers()
