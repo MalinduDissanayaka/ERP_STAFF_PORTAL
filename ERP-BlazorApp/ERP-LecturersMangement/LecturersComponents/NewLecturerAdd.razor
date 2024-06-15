@@ -1,11 +1,14 @@
 ﻿@using ERP_LecturersMangement.DTOs.Request
 @using MudBlazor
 @using FluentValidation
-@using System.Net.Http.Json;
-@using System.Text;
-@using System.Text.Json;
+@using System.Net.Http.Json
+@using System.Text
+@using System.Text.Json
+@using OfficeOpenXml
+@using Microsoft.AspNetCore.Components.Forms
 
 @inject ISnackbar Snackbar
+@inject HttpClient Http
 
 
 
@@ -13,132 +16,200 @@
     <h3 class="text-center mb-4">Lecturers Add Page</h3>
 
     <MudCard>
+
+        <h5><c>ADD LECTURERS FROM EXCEL</c></h5>
+        <InputFile @ref="fileInput" OnChange="HandleFileUpload" />
+        @if (teachers != null && teachers.Any())
+        {
+            <button class="btn btn-primary" @onclick="SaveAllLecturers">Save All Lecturers</button>
+        }
+
         <MudCardContent>
-            <MudForm Model="@model" @ref="@form"
-                     Validation="@(lecturerValidator.ValidateValue)"
-                     ValidationDelay="0">
+            <MudForm Model="@model" @ref="@form" Validation="@(lecturerValidator.ValidateValue)" ValidationDelay="0">
                 <MudGrid>
-
                     <MudItem xs="12">
-                        <MudTextField @bind-Value="model.FirstName"
-                                      Label="First Name"
-                                      Required="true"
-                                      For="@(()=>model.FirstName)" />
+                        <MudTextField @bind-Value="model.FirstName" Label="First Name" Required="true" For="@(() => model.FirstName)" />
                     </MudItem>
-
                     <MudItem xs="12">
-                        <MudTextField @bind-Value="model.LastName"
-                                      Label="Last Name"
-                                      Required="true"
-                                      For="@(()=>model.LastName)" />
+                        <MudTextField @bind-Value="model.LastName" Label="Last Name" Required="true" For="@(() => model.LastName)" />
                     </MudItem>
-
-                    
-
                     <MudItem xs="12">
-                        <MudTextField @bind-Value="model.Email"
-                                      Label="Email"
-                                      Required="true"
-                                      For="@(()=>model.Email)" />
+                        <MudTextField @bind-Value="model.Email" Label="Email" Required="true" For="@(() => model.Email)" />
                     </MudItem>
-
                     <MudItem xs="12">
-                        <MudTextField @bind-Value="@model.Department"
-                                        Label="Department"
-                                        Required="true"
-                                        For="@(() => model.Department)"
-                        />
+                        <MudTextField @bind-Value="model.Department" Label="Department" Required="true" For="@(() => model.Department)" />
                     </MudItem>
-
                     <MudItem xs="12">
-                        <MudTextField @bind-Value="model.DoB"
-                                      Label="DoB"
-                                      Required="true"
-                                      For="@(()=>model.DoB)" />
+                        <MudTextField @bind-Value="model.DoB" Label="DoB" Required="true" For="@(() => model.DoB)" />
                     </MudItem>
-
-
                     <MudItem xs="12">
-                        <MudTextField @bind-Value="model.Phone"
-                                      Label="Contact Number"
-                                      Required="true"
-                                      For="@(()=>model.Phone)" />
+                        <MudTextField @bind-Value="model.Phone" Label="Contact Number" Required="true" For="@(() => model.Phone)" />
                     </MudItem>
-
-                   
-
-
                 </MudGrid>
             </MudForm>
+
+           @*  <InputFile OnChange="HandleFileUpload" /> *@
+
         </MudCardContent>
-
         <MudCardActions>
-            <MudButton Variant="Variant.Filled"
-                       Color="Color.Primary"
-                       Class="ml-auto"
-                       OnClick="@(async () => await Submit())">Add</MudButton>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="@(async () => await Submit())">Add</MudButton>
         </MudCardActions>
-
     </MudCard>
 </MudContainer>
 
-
-
-
 @code {
+
+
+    private string successMessage;
+    private string errorMessage;
+    private InputFile fileInput;
+    private string uploadError;
+    private List<CreateLecturerRequest> teachers;
 
     [Parameter]
     public EventCallback onAdded { get; set; }
 
-    private HttpClient Http = new HttpClient();
-
     private CreateLecturerRequest model = new CreateLecturerRequest();
 
-    LecturerModelValidator lecturerValidator = new LecturerModelValidator();
     MudForm form;
+    LecturerModelValidator lecturerValidator = new LecturerModelValidator();
+    
 
     public class LecturerModelValidator : AbstractValidator<CreateLecturerRequest>
     {
         public LecturerModelValidator()
         {
-            
-
             RuleFor(x => x.FirstName)
-                .NotEmpty().WithMessage("First Name is Required.")
-                .MinimumLength(3)
-                .MaximumLength(20);
+           .NotEmpty()
+           .Length(1, 100);
+
 
             RuleFor(x => x.LastName)
-                .NotEmpty().WithMessage("Last Name is Required.")
-                .MinimumLength(3)
-                .MaximumLength(20);
+            .NotEmpty()
+            .Length(1, 100);
 
-
-            RuleFor(x => x.Phone)
-                .NotEmpty().WithMessage("Contact number is required.")
-                .Matches("^[0-9]*$").WithMessage("Contact number can only contain numbers.");
 
             RuleFor(x => x.Email)
-            .NotEmpty().WithMessage("Email Address is Required.")
-            .EmailAddress().WithMessage("Invalid Email Address Format.");
+            .Cascade(CascadeMode.Stop)
+            .NotEmpty()
+            .EmailAddress()
+            .MustAsync(async (value, cancellationToken) => await IsUniqueAsync(value));
         }
 
         private async Task<bool> IsUniqueAsync(string email)
+
         {
-            // Simulates a long running http call
+
             await Task.Delay(2000);
             return email.ToLower() != "test@test.com";
+
+
         }
 
         public Func<object, string, Task<IEnumerable<string>>> ValidateValue => async (model, propertyName) =>
         {
-            var result = await ValidateAsync(ValidationContext<CreateLecturerRequest>
-                .CreateWithOptions((CreateLecturerRequest)model, x => x.IncludeProperties(propertyName)));
+            var result = await ValidateAsync(ValidationContext<CreateLecturerRequest>.CreateWithOptions((CreateLecturerRequest)model, x => x.IncludeProperties(propertyName)));
             if (result.IsValid)
                 return Array.Empty<string>();
             return result.Errors.Select(e => e.ErrorMessage);
         };
     }
+
+    private async Task HandleFileUpload(InputFileChangeEventArgs e)
+    {
+        var file = e.File;
+
+        if (file != null)
+        {
+            try
+            {
+                teachers = await ReadLecturersFromExcel(file);
+
+
+            }
+            catch (Exception ex)
+            {
+                Snackbar.Add($"Error uploading file: {ex.Message}", MudBlazor.Severity.Error);
+            }
+        }
+    }
+
+
+    private async Task<List<CreateLecturerRequest>> ReadLecturersFromExcel(IBrowserFile file)
+    {
+        var lecturers = new List<CreateLecturerRequest>();
+
+        using (var memoryStream = new MemoryStream())
+        {
+            await file.OpenReadStream().CopyToAsync(memoryStream);
+            memoryStream.Position = 0;
+
+            using (var package = new OfficeOpenXml.ExcelPackage(memoryStream))
+            {
+                var worksheet = package.Workbook.Worksheets.FirstOrDefault();
+
+                if (worksheet != null)
+                {
+                    for (int row = 2; row <= worksheet.Dimension.End.Row; row++)
+                    {
+                        var model = new CreateLecturerRequest
+                            {
+                                FirstName = worksheet.Cells[row, 1].Value?.ToString(),
+                                LastName = worksheet.Cells[row, 2].Value?.ToString(),
+                                Department = worksheet.Cells[row, 3].Value?.ToString(),
+                                Email = worksheet.Cells[row, 4].Value?.ToString(),
+                                Phone = worksheet.Cells[row, 5].Value?.ToString(),
+                                NationalId = worksheet.Cells[row, 6].Value?.ToString(),
+                                DoB = DateTime.Parse(worksheet.Cells[row, 7].Value?.ToString() ?? DateTime.MinValue.ToString())
+                            };
+                        lecturers.Add(model);
+                    }
+                }
+            }
+        }
+
+        return lecturers;
+    }
+
+
+    private async Task SaveAllLecturers()
+    {
+        if (teachers != null && teachers.Any())
+        {
+            bool allTeachersSaved = true;
+
+            foreach (var teacher in teachers)
+            {
+                try
+                {
+                    var jsonModel = JsonSerializer.Serialize(teacher);
+                    var content = new StringContent(jsonModel, Encoding.UTF8, "application/json");
+                    var response = await Http.PostAsync("https://localhost:7055/api/LecturerManagement/", content);
+
+                    if (!response.IsSuccessStatusCode)
+                    {
+                    //     Snackbar.Add($"Error saving lecturer: {teacher.FirstName} {teacher.LastName}", MudBlazor.Severity.Error);
+                        await onAdded.InvokeAsync();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    allTeachersSaved = false;
+                    Snackbar.Add($"Error saving teacher: {ex.Message}", MudBlazor.Severity.Error);
+                }
+            }
+            if (allTeachersSaved)
+            {
+                Snackbar.Add("All Lecturers saved successfully", MudBlazor.Severity.Success);
+                await Task.Delay(1500);
+                
+            }
+        }
+        
+
+        Snackbar.Add("All lecturers processed", MudBlazor.Severity.Success);
+    }
+
 
     private async Task Submit()
     {
@@ -161,8 +232,6 @@
                 {
                     Snackbar.Add("Please Check Your Connection.", MudBlazor.Severity.Error);
                 }
-
-
             }
             else
             {
@@ -175,7 +244,6 @@
         }
     }
 
+  
 
-    private List<string> digreeList = new List<string> { "EIE", "COM" };
-
-}
+    }
