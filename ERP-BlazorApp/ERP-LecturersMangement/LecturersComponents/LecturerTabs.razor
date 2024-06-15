@@ -14,7 +14,7 @@
 
 
     <MudTabPanel Text="Add Lecturers" @ref="panel02" >
-         <NewLecturerAdd onAdded="Activate_01" />   
+         <NewLecturerAdd  />   
     </MudTabPanel>   
         
     
@@ -36,12 +36,12 @@
 
     }
 
-    void Activate_01()
-    {
-        tabs.ActivatePanel(panel01);
-        Snackbar.Add("Lecturer Added Successfully", Severity.Success);
+    // void Activate_01()
+    // {
+    //     tabs.ActivatePanel(panel01);
+    //     Snackbar.Add("Lecturer Added Successfully", Severity.Success);
        
-    }
+    // } onAdded="Activate_01"
 
     
 }
