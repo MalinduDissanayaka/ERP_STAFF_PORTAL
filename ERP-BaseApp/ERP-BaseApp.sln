@@ -135,6 +135,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ERP.ModuleManagement.Core",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ERP.ModuleManagement.DataSevices", "ModuleManagement\ERP.ModuleManagement.DataServices\ERP.ModuleManagement.DataSevices.csproj", "{07248A61-584E-4015-8007-F9F31347E079}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TimeTableManagement", "TimeTableManagement", "{79CE41D5-128C-4E31-81C6-2F5855C7B63B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ERP.TimeTableManagement.Api", "TimeTableManagement\ERP.TimeTableManagement.Api\ERP.TimeTableManagement.Api.csproj", "{138A3C67-BBB9-4676-9BB7-2596280D5F2D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ERP.TimeTableManagement.Application", "TimeTableManagement\ERP.TimeTableManagement.Application\ERP.TimeTableManagement.Application.csproj", "{3ABEB9AF-5CFB-4F0F-BF61-4F798DFD291B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ERP.TimeTableManagement.Core", "TimeTableManagement\ERP.TimeTableManagement.Core\ERP.TimeTableManagement.Core.csproj", "{6C15FF70-2985-4553-9B3F-62BC2C67F5C3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ERP.TimeTableManagement.DataService", "TimeTableManagement\ERP.TimeTableManagement.DataService\ERP.TimeTableManagement.DataService.csproj", "{051B12EB-DFE4-45CD-AD6B-13071C64440C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -345,6 +355,22 @@ Global
 		{07248A61-584E-4015-8007-F9F31347E079}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{07248A61-584E-4015-8007-F9F31347E079}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{07248A61-584E-4015-8007-F9F31347E079}.Release|Any CPU.Build.0 = Release|Any CPU
+		{138A3C67-BBB9-4676-9BB7-2596280D5F2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{138A3C67-BBB9-4676-9BB7-2596280D5F2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{138A3C67-BBB9-4676-9BB7-2596280D5F2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{138A3C67-BBB9-4676-9BB7-2596280D5F2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3ABEB9AF-5CFB-4F0F-BF61-4F798DFD291B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3ABEB9AF-5CFB-4F0F-BF61-4F798DFD291B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3ABEB9AF-5CFB-4F0F-BF61-4F798DFD291B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3ABEB9AF-5CFB-4F0F-BF61-4F798DFD291B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C15FF70-2985-4553-9B3F-62BC2C67F5C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C15FF70-2985-4553-9B3F-62BC2C67F5C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C15FF70-2985-4553-9B3F-62BC2C67F5C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C15FF70-2985-4553-9B3F-62BC2C67F5C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{051B12EB-DFE4-45CD-AD6B-13071C64440C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{051B12EB-DFE4-45CD-AD6B-13071C64440C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{051B12EB-DFE4-45CD-AD6B-13071C64440C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{051B12EB-DFE4-45CD-AD6B-13071C64440C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -402,6 +428,10 @@ Global
 		{4D665A77-C222-4A38-9116-F7925668D602} = {9F3C138F-3E1B-42BB-B901-D28E008AD209}
 		{4C5EB85C-610B-4582-8D92-FF71F00E4284} = {9F3C138F-3E1B-42BB-B901-D28E008AD209}
 		{07248A61-584E-4015-8007-F9F31347E079} = {9F3C138F-3E1B-42BB-B901-D28E008AD209}
+		{138A3C67-BBB9-4676-9BB7-2596280D5F2D} = {79CE41D5-128C-4E31-81C6-2F5855C7B63B}
+		{3ABEB9AF-5CFB-4F0F-BF61-4F798DFD291B} = {79CE41D5-128C-4E31-81C6-2F5855C7B63B}
+		{6C15FF70-2985-4553-9B3F-62BC2C67F5C3} = {79CE41D5-128C-4E31-81C6-2F5855C7B63B}
+		{051B12EB-DFE4-45CD-AD6B-13071C64440C} = {79CE41D5-128C-4E31-81C6-2F5855C7B63B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EFC59B45-8A1B-45B0-AA0C-9897743CD009}
