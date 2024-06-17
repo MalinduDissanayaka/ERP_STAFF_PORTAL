@@ -1,5 +1,9 @@
 using ERP.BlazorUI.Components;
 using MudBlazor.Services;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
+using System.Net.Http;
+using MudBlazor;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,9 +13,14 @@ builder.Services.AddRazorComponents()
 
 builder.Services.AddMudServices();
 
+
+
+// Register HttpClient for dependency injection
+builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.Configuration.GetValue<string>("BaseAPIUrl") ?? "https://localhost:7055/") });
+
+builder.Services.AddScoped<ISnackbar, SnackbarService>();
+
 var app = builder.Build();
-
-
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
