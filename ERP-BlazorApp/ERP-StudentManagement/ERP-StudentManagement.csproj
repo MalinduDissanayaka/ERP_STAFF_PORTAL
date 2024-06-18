@@ -27,4 +27,10 @@
     <None Include="StudentManagementComponents\StudentsTabs.razor" />
   </ItemGroup>
 
+ 
+
+  <ItemGroup>
+    <Folder Include="wwwroot\images\" />
+  </ItemGroup>
+
 </Project>

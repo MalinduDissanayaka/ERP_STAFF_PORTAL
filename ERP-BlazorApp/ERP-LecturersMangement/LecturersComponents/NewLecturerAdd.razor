@@ -15,15 +15,15 @@
 <MudContainer>
     <h3 class="text-center mb-4">Lecturers Add Page</h3>
 
-    <MudCard>
+    <MudCard Class="my-custom-card">
 
         <h5><c>ADD LECTURERS FROM EXCEL</c></h5>
         <InputFile @ref="fileInput" OnChange="HandleFileUpload" />
-@* 
+
         @if (teachers != null && teachers.Any())
         {
             <button class="btn btn-primary" @onclick="SaveAllLecturers">Save All Lecturers</button>
-        } *@
+        } 
 
         <MudCardContent>
             <MudForm Model="@model" @ref="@form" Validation="@(lecturerValidator.ValidateValue)" ValidationDelay="0">
@@ -61,6 +61,27 @@
         </MudCardActions>
     </MudCard>
 </MudContainer>
+
+<style>
+    .my-custom-card {
+        max-width: 800px;
+        margin: auto;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        background-color: #f8f9fa; /* Light gray background */
+        border: 1px solid #ced4da; /* Gray border */
+    }
+
+    h3 {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        text-align: center;
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+    }
+</style>
 
 @code {
 

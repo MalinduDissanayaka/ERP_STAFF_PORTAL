@@ -8,7 +8,8 @@
 
     <div class="sidebar mud-elevation-1">
         <div class="top-row mud-drawer-head">
-            <div>
+            <div class="top-row ">
+                <MudIconButton  Icon="@Icons.Material.Filled.Home" Style="color: white;" />
                 <p class="navbar-brand">Faculty of Engineering</p>
             </div>
         </div>
@@ -19,14 +20,14 @@
         </div>
 
         <div class="nav-scrollable" onclick="toggleNavbar()">
-            <NavMenu />
+            <NavMenu/>
         </div>
 
     </div>
 
      <main>
         <div class="top-row px-4">
-            <MudIconButton Icon="@Icons.Material.Filled.Home" Style="color: white;"  />
+            
             <MudIconButton Icon="@Icons.Material.Filled.AccountBox" Style="color: white;"  />
         </div>
 
@@ -43,11 +44,21 @@
 </div>
 
 
-@code {
+@code{
+    private bool IsNavbarCollapsed {get;set} =true;
+    private void toggleNavbar()
+    {
+        IsNavbarCollapsed = !IsNavbarCollapsed;  
+    }
+
+}
+
+
+@* @code {
     private bool IsNavbarCollapsed { get; set; } = true;
 
     private void toggleNavbar()
     {
         IsNavbarCollapsed = !IsNavbarCollapsed;
     }
-}
+} *@

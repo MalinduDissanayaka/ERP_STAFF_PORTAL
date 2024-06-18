@@ -5,15 +5,16 @@
 @inject IDialogService DialogService
 @inject ISnackbar Snackbar
 
-<h3>ListOfLecturers Component</h3>
+<h3>List Of Lecturers </h3>
 
 
-<MudTable Items="@_lecturers">
+<MudTable Items="@_lecturers" Class="custom-table">
     <HeaderContent>
         <MudTh>Full Name</MudTh>
         <MudTh>Email</MudTh>
         <MudTh>Department</MudTh>
         <MudTh>NationalId</MudTh>
+        <MudTh>Actions</MudTh>
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="FullName">@context.FullName</MudTd>
@@ -49,6 +50,46 @@
             <MudButton Variant="Variant.Filled" Color="Color.Error" StartIcon="@Icons.Material.Filled.DeleteForever">Delete!</MudButton>
         </YesButton>
     </MudMessageBox>
+
+    <style>
+        /* Styles for h3 heading */
+        h3 {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* Styles for MudTable */
+        .custom-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+            .custom-table th, .custom-table td {
+                border: 1px solid #ddd;
+                padding: 8px;
+            }
+
+            .custom-table th {
+                background-color: #f6efef;
+                color: #000000;
+                font-size: large;
+                font-weight: 600;
+                font-family: sans-serif;
+            }
+
+            .custom-table td {
+                background-color: white;
+                color: #000000;
+            }
+
+        font-weight: bold;
+        }
+    </style>
 
 
 

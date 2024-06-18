@@ -12,7 +12,7 @@
 <MudContainer>
     
 
-    <MudCard>
+    <MudCard Class="my-custom-card">
         <MudCardContent>
             <MudForm Model="@model" @ref="@form"
                      Validation="@(studentValidator.ValidateValue)"
@@ -97,6 +97,18 @@
     </MudCard>
 </MudContainer>
 
+<style>
+    .my-custom-card {
+        max-width: 800px;
+        margin: auto;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        background-color: #f8f9fa; /* Light gray background */
+        border: 1px solid #ced4da; /* Gray border */
+    }
+</style>
+
 
 
 
@@ -140,9 +152,12 @@
                 .NotEmpty().WithMessage("Contact number is required.")
                 .Matches("^[0-9]*$").WithMessage("Contact number can only contain numbers.");
 
+
             RuleFor(x => x.Email)
-            .NotEmpty().WithMessage("Email Address is Required.")
-            .EmailAddress().WithMessage("Invalid Email Address Format.");
+            .Cascade(CascadeMode.Stop)
+            .NotEmpty()
+            .EmailAddress()
+            .MustAsync(async (value, cancellationToken) => await IsUniqueAsync(value));
 
         }
 
@@ -207,7 +222,7 @@
     }
 
     private List<string> departmentlist = new List<string> { "Frist Year", "Computer Department", "Electrical Department", "Civil Department", "Mechanical Department", "Merain Engineering" };
-    // private List<string> digreeList = new List<string> { "EIE", "COM" };
+    
 }
 
 
