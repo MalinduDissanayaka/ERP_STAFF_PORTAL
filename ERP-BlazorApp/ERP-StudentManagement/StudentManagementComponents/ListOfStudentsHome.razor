@@ -1,11 +1,11 @@
-﻿ @using ERP_StudentManagement.DTOs.Response
-@using System.Net.Http.Json
-@using MudBlazor
-@inject NavigationManager NavigationManager
-@inject IDialogService DialogService
-@inject ISnackbar Snackbar
+﻿    @using ERP_StudentManagement.DTOs.Response
+    @using System.Net.Http.Json
+    @using MudBlazor
+    @inject NavigationManager NavigationManager
+    @inject IDialogService DialogService
+    @inject ISnackbar Snackbar
 
-<h3>Faculty Of Engineering , University Of Ruhuna Student's List </h3>
+<h2>Faculty Of Engineering , University Of Ruhuna Student's List </h2>
 
 
 <MudTable Items="@_student" Class="custom-table">
@@ -15,42 +15,31 @@
         <MudTh>Email</MudTh>
         <MudTh>Department</MudTh>
         <MudTh>NationalId</MudTh>
-        <MudTh>Actions</MudTh>
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="RegNo">@context.RegistrationNumber</MudTd>
-        <MudTd DataLabel="FullName">@context.FullName</MudTd>
-        <MudTd DataLabel="Email">@context.Email</MudTd>
-        <MudTd DataLabel="Department">@context.Department</MudTd>
-        <MudTd DataLabel="NationalID">@context.NationalId</MudTd>
-        <MudTd DataLabel="Actions">
-            <div class="button-group">
-                <MudFab Color="Color.Secondary" OnClick="@(()=>ShowStudent(context.StudentID))"
-                        StartIcon="@Icons.Material.Filled.Person" Size="Size.Small" />
-                <MudFab Color="Color.Primary" OnClick="@(() => EditStudent(context.StudentID))"
-                        StartIcon="@Icons.Material.Filled.Edit" Size="Size.Small" />
-                <MudFab Color="Color.Warning" OnClick="@(()=>DeleteStudent(context.StudentID))"
-                        StartIcon="@Icons.Material.Filled.Delete" Size="Size.Small" />
-            </div>
+            <MudTd DataLabel="FullName">@context.FullName</MudTd>
+            <MudTd DataLabel="Email">@context.Email</MudTd>
+            <MudTd DataLabel="Department">@context.Department</MudTd>
+            <MudTd DataLabel="NationalID">@context.NationalId</MudTd>
+          
+          
 
-        </MudTd>
+        </RowTemplate>
+        <PagerContent>
+            <MudTablePager />
+        </PagerContent>
+    </MudTable>
 
-
-    </RowTemplate>
-    <PagerContent>
-        <MudTablePager />
-    </PagerContent>
-</MudTable>
-
-<style>
-        /* Styles for h3 heading */
-        h3 {
-            margin-top: 20px;
+    <style>
+        /* Styles for h2 heading */
+        h2 {
+            margin-top: 10px;
             margin-bottom: 20px;
             text-align: center;
-            font-size: 24px;
-            font-weight: bold;
-            color: #333;
+            font-size: 32px; /* Increased font size for better readability */
+            font-weight: 600;
+            color: #333; /* Dark gray text color */
         }
 
         /* Styles for MudTable */
@@ -78,25 +67,23 @@
                 color: #000000;
             }
 
-        font-weight: bold;
-        }
-</style>
+    </style>
 
 
 
-<MudMessageBox @ref="mbox" Title="Warning" CancelText="Cancel">
-    <MessageContent>
-        Are You Sure to Delete This Student!
-    </MessageContent>
-    <YesButton>
-        <MudButton Variant="Variant.Filled" Color="Color.Error" StartIcon="@Icons.Material.Filled.DeleteForever">Delete!</MudButton>
-    </YesButton>
-</MudMessageBox>
+    <MudMessageBox @ref="mbox" Title="Warning" CancelText="Cancel">
+        <MessageContent>
+            Are You Sure to Delete This Student!
+        </MessageContent>
+        <YesButton>
+            <MudButton Variant="Variant.Filled" Color="Color.Error" StartIcon="@Icons.Material.Filled.DeleteForever">Delete!</MudButton>
+        </YesButton>
+    </MudMessageBox>
 
 
 
 
-@code {
+    @code {
 
     private string buttonGroupStyle = "display: flex; gap: 8px;";
 
@@ -194,6 +181,6 @@
 
 
 
-  }
+    }
 
- 
+

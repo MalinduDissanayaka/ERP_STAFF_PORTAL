@@ -20,7 +20,12 @@
         <MudTextField @bind-Value="_lecturer.LastName" Label="Last Name" />
         <MudTextField @bind-Value="_lecturer.Email" Label="Email" />
         <MudTextField @bind-Value="_lecturer.Phone" Label="Contact Number" />
-        <MudTextField @bind-Value="_lecturer.Department" Label="Department" />
+        <MudSelect T="string" @bind-Value="_lecturer.Department" Label="Department">
+            @foreach (var option in departmentlist)
+            {
+                <MudSelectItem Value="option">@option</MudSelectItem>
+            }
+        </MudSelect>
         <MudTextField @bind-Value="_lecturer.NationalId" Label="NationalId" />
         <MudTextField @bind-Value="_lecturer.DoB" Label="Date Of Birth" />
     </DialogContent>
@@ -81,4 +86,5 @@
         }
     }
 
+    private List<string> departmentlist = new List<string> { "Department of interdisciplinary Studies", "Computer Department", "Electrical Department", "Civil Department", "Mechanical Department", "Merain Engineering" };
 }

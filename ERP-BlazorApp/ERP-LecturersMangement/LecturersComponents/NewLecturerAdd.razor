@@ -38,10 +38,14 @@
                         <MudTextField @bind-Value="model.Email" Label="Email" Required="true" For="@(() => model.Email)" />
                     </MudItem>
                     <MudItem xs="12">
-                        <MudTextField @bind-Value="model.Department" Label="Department" Required="true" For="@(() => model.Department)" />
+                        <MudSelect Label="Department" @bind-Value="@model.Department">
+                            @foreach (var option in departmentlist)
+                            {
+                                <MudSelectItem Value="option">@option</MudSelectItem>
+                            }
+                        </MudSelect>
                     </MudItem>
                     <MudItem xs="12">
-
                     <MudTextField @bind-Value="model.NationalId" Label="National ID" Required="true" For="@(() => model.NationalId)" />
                     </MudItem>
                     <MudItem xs="12">
@@ -53,7 +57,7 @@
                 </MudGrid>
             </MudForm>
 
-           @*  <InputFile OnChange="HandleFileUpload" /> *@
+          
 
         </MudCardContent>
         <MudCardActions>
@@ -106,20 +110,22 @@
         public LecturerModelValidator()
         {
             RuleFor(x => x.FirstName)
-           .NotEmpty()
-           .Length(1, 100);
+               .NotEmpty().WithMessage("First Name is Required.")
+               .NotEmpty()
+               .Length(1, 100);
 
 
             RuleFor(x => x.LastName)
-            .NotEmpty()
-            .Length(1, 100);
+                .NotEmpty().WithMessage("Last Name is Required.")
+                .NotEmpty()
+                .Length(1, 100);
 
 
             RuleFor(x => x.Email)
-            .Cascade(CascadeMode.Stop)
-            .NotEmpty()
-            .EmailAddress()
-            .MustAsync(async (value, cancellationToken) => await IsUniqueAsync(value));
+                .Cascade(CascadeMode.Stop)
+                .NotEmpty()
+                .EmailAddress()
+                .MustAsync(async (value, cancellationToken) => await IsUniqueAsync(value));
         }
 
         private async Task<bool> IsUniqueAsync(string email)
@@ -184,7 +190,7 @@
                                 Email = worksheet.Cells[row, 4].Value?.ToString(),
                                 Phone = worksheet.Cells[row, 5].Value?.ToString(),
                                 NationalId = worksheet.Cells[row, 6].Value?.ToString(),
-                                // DoB = DateTime.Parse(worksheet.Cells[row, 7].Value?.ToString() ?? DateTime.MinValue.ToString())
+                                
                             };
                         lecturers.Add(model);
                     }
@@ -269,6 +275,6 @@
         }
     }
 
-  
+    private List<string> departmentlist = new List<string> { "Department of interdisciplinary Studies", "Computer Department", "Electrical Department", "Civil Department", "Mechanical Department", "Merain Engineering" };
 
-    }
+}
