@@ -8,14 +8,16 @@
 
 <MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6" @ref="tabs">
 
-    <MudTabPanel Text="Overview" @ref="panel01">
-        <ListOfLecturers/>
+   
+
+    <MudTabPanel Text="Add Lecturers" @ref="panel01" >
+         <NewLecturerAdd  />   
     </MudTabPanel>
 
+    <MudTabPanel Text="Lectures List" @ref="panel02">
+        <ListOfLecturers />
+    </MudTabPanel>
 
-    <MudTabPanel Text="Add Lecturers" @ref="panel02" >
-         <NewLecturerAdd onAdded="Activate_01" />   
-    </MudTabPanel>   
         
     
 </MudTabs >
@@ -36,12 +38,12 @@
 
     }
 
-    void Activate_01()
-    {
-        tabs.ActivatePanel(panel01);
-        Snackbar.Add("Lecturer Added Successfully", Severity.Success);
+    // void Activate_01()
+    // {
+    //     tabs.ActivatePanel(panel01);
+    //     Snackbar.Add("Lecturer Added Successfully", Severity.Success);
        
-    }
+    // } onAdded="Activate_01"
 
     
 }

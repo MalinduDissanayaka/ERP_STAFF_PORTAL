@@ -33,13 +33,12 @@
                     </MudItem>
 
                     <MudItem xs="12">
-                        <MudSelect Label="Semester" @bind-Value="@model.Semester">
-                            @foreach (var option in semesterlist)
-                            {
-                                <MudSelectItem Value="option">@option</MudSelectItem>
-                            }
-                        </MudSelect>
+                        <MudTextField @bind-Value="model.Semester"
+                                      Label="Semester"
+                                      Required="true"
+                                      For="@(()=>model.Semester)" />
                     </MudItem>
+
                     <MudItem xs="12">
                         <MudTextField @bind-Value="model.ModuleCoordineter"
                                       Label="Module Coordinator"
@@ -166,7 +165,7 @@
         }
     }
 
-    private List<string> semesterlist = new List<string> { "Semester 01", "Semester 02", "Semester 03", "Semester 04", "Semester 05", "Semester 06", "Semester 07", "Semester 08" };
+
    
 
 }

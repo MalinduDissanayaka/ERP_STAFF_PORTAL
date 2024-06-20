@@ -1,6 +1,8 @@
-﻿@using ERP.BlazorUI.Components
+﻿
+@using ERP.BlazorUI.Components
 @inherits LayoutComponentBase
 
+@inject NavigationManager NavigationManager
 
 <MyMudThemeProvider />
 
@@ -8,29 +10,30 @@
 
     <div class="sidebar mud-elevation-1">
         <div class="top-row mud-drawer-head">
-            <div>
+            <div class="top-row">
+                @* <MudIconButton Icon="@Icons.Material.Filled.Home" Style="color: white;" OnClick="navigateToHome" /> *@
                 <p class="navbar-brand">Faculty of Engineering</p>
             </div>
         </div>
 
         <input type="checkbox" title="Navigation menu" class="navbar-toggler" />
-        <div class="navbar-toggler" role="button" aria-label="Toggle navigation" onclick="toggleNavbar()">
+        <div class="navbar-toggler" role="button" aria-label="Toggle navigation" >
             <span class="navbar-toggler-icon"></span>
         </div>
 
-        <div class="nav-scrollable" onclick="toggleNavbar()">
+       
+
+        <div class="nav-scrollable" onclick="toggle">
             <NavMenu />
         </div>
-
     </div>
 
-     <main>
+    <main>
         <div class="top-row px-4">
-            <MudIconButton Icon="@Icons.Material.Filled.Home" Style="color: white;"  />
-            <MudIconButton Icon="@Icons.Material.Filled.AccountBox" Style="color: white;"  />
+            <MudIconButton Icon="@Icons.Material.Filled.AccountBox" Style="color: white;" />
         </div>
 
-        <MudContainer  Class="my-2 pt-2">
+        <MudContainer Class="my-2 pt-2">
             @Body
         </MudContainer>
     </main>
@@ -42,12 +45,18 @@
     <a class="dismiss">🗙</a>
 </div>
 
-
 @code {
     private bool IsNavbarCollapsed { get; set; } = true;
+
+   
 
     private void toggleNavbar()
     {
         IsNavbarCollapsed = !IsNavbarCollapsed;
+    }
+
+    private void navigateToHome()
+    {
+        NavigationManager.NavigateTo("/");
     }
 }

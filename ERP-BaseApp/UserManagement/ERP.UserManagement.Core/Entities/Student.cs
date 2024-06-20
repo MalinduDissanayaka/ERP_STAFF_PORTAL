@@ -29,9 +29,7 @@ namespace ERP.UserManagement.Core.Entities
         public string Department { get; set; } = string.Empty;
 
 
-        // public Guid? AdvisorId { get; set; }
-
-        // public virtual Lecturer? Advisor { get; set; }
+        
 
     }
 }

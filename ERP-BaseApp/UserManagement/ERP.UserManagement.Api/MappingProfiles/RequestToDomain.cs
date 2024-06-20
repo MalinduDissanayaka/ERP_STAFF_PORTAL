@@ -17,24 +17,20 @@ namespace ERP.StudentRegistration.Api.MappingProfiles
                       
             CreateMap<UpdateStudentRequest, Student>()
                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.StudentID))
-               .ForMember(
-               dest => dest.UpdateDate, opt => opt.MapFrom(src => DateTime.UtcNow))
-               .ForMember(
-                dest => dest.Status, opt => opt.MapFrom(src => 1));
+               .ForMember(dest => dest.UpdateDate, opt => opt.MapFrom(src => DateTime.UtcNow))
+               .ForMember(dest => dest.Status, opt => opt.MapFrom(src => 1));
 
 
-            CreateMap<CreateLecturerRequest, Students>()
-           .ForMember(dest => dest.Status, opt => opt.MapFrom(src => 1))
-           .ForMember(dest => dest.AddedDate, opt => opt.MapFrom(src => DateTime.UtcNow))
-           .ForMember(dest => dest.UpdateDate, opt => opt.MapFrom(src => DateTime.UtcNow));
+            CreateMap<CreateLecturerRequest, Lecturer>()
+               .ForMember(dest => dest.Status, opt => opt.MapFrom(src => 1))
+               .ForMember(dest => dest.AddedDate, opt => opt.MapFrom(src => DateTime.UtcNow))
+               .ForMember(dest => dest.UpdateDate, opt => opt.MapFrom(src => DateTime.UtcNow));
 
 
-            CreateMap<UpdateLecturerRequest, Students>()
+            CreateMap<UpdateLecturerRequest, Lecturer>()
                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.LecturerID))
-               .ForMember(
-               dest => dest.UpdateDate, opt => opt.MapFrom(src => DateTime.UtcNow))
-               .ForMember(
-                dest => dest.Status, opt => opt.MapFrom(src => 1));
+               .ForMember(dest => dest.UpdateDate, opt => opt.MapFrom(src => DateTime.UtcNow))
+               .ForMember(dest => dest.Status, opt => opt.MapFrom(src => 1));
         }
 
     }

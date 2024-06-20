@@ -20,8 +20,13 @@
         <MudTextField @bind-Value="_student.FirstName" Label="First Name" />
         <MudTextField @bind-Value="_student.LastName" Label="Last Name" />
         <MudTextField @bind-Value="_student.Phone" Label="Contact Number" />
-       
-        <MudTextField @bind-Value="_student.Department" Label="Department" />
+        <!-- Department Dropdown -->
+        <MudSelect T="string" @bind-Value="_student.Department" Label="Department">
+            @foreach (var option in departmentList)
+            {
+                <MudSelectItem Value="option">@option</MudSelectItem>
+            }
+        </MudSelect>
         <MudTextField @bind-Value="_student.District" Label="District" />
         <MudTextField @bind-Value="_student.NationalId" Label="NationalId" />
         <MudTextField @bind-Value="_student.Address1" Label="Address1" />
@@ -47,7 +52,7 @@
 
     private UpdateStudentRequest _student = new UpdateStudentRequest();
 
-
+  
 
     protected override async Task OnInitializedAsync()
     {
@@ -83,5 +88,7 @@
             Snackbar.Add("Please Check Your Connection.", MudBlazor.Severity.Error);
         }
     }
+
+    private List<string> departmentList = new List<string> { "Frist Year", "Computer Department", "Electrical Department", "Civil Department", "Mechanical Department", "Merain Engineering" };
 
 }
