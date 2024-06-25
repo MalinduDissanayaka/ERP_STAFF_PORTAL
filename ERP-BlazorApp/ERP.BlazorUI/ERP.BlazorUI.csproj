@@ -34,8 +34,6 @@
 	<ItemGroup>
 
 		<ProjectReference Include="..\Lib\ERP-StudentRegistration\ERP-StudentRegistration.csproj" />
-
-		<ProjectReference Include="..\TimeTableManagement\ERP-TimeTableManagement.csproj" />
 	</ItemGroup>
 
 

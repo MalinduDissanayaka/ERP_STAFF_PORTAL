@@ -9,7 +9,7 @@ namespace ERP.TimeTableManagement.Core.DTOs.Responses
 {
     public class TimeSlotResponse
     {
-        public Guid TimeSlotId { get; set; }
+        public Guid Id { get; set; }
         public TimeSpan StartTime { get; set; }
         public TimeSpan EndTime { get; set; }
         public Guid? ModuleId { get; set; }

@@ -8,7 +8,7 @@ namespace ERP.TimeTableManagement.Core.DTOs.Responses
 {
     public class ModuleResponse
     {
-        public Guid ModuleId { get; set; }
+        public Guid Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public string Code { get; set; } = string.Empty;
     }
