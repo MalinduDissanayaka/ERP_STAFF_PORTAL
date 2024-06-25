@@ -8,7 +8,7 @@ namespace ERP.TimeTableManagement.Core.DTOs.Requests.UpdateRequests
 {
     public class UpdateLectureHallRequest
     {
-        public Guid LectureHallId { get; set; }
+        public Guid Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public int Capacity { get; set; }
     }

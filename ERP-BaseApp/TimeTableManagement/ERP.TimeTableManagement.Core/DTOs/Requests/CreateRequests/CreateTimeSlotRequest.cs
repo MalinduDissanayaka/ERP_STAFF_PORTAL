@@ -15,5 +15,4 @@ namespace ERP.TimeTableManagement.Core.DTOs.Requests.CreateRequests
         public Guid? LectureHallId { get; set; }
         public SlotType SlotType { get; set; }
     }
-    
 }
