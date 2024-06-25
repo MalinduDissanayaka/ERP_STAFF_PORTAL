@@ -5,73 +5,125 @@
 @using System.Text;
 @using System.Text.Json;
 @inject ISnackbar Snackbar
+@implements IDisposable
 
+<div class="home">
+    <div class="form-container">
+        <MudContainer>
+            <h3 class="text-center mb-4">Module Add Page</h3>
 
+            <MudCard>
+                <MudCardContent>
+                    <MudForm Model="@model" @ref="@form"
+                             Validation="@(moduleValidator.ValidateValue)"
+                             ValidationDelay="0"
+                             Colour="Color.Primary">
+                        <MudGrid>
+                            <MudItem xs="12">
+                                <MudTextField @bind-Value="model.ModuleName"
+                                              Label="Module Name"
+                                              Required="true"
+                                              For="@(()=>model.ModuleName)" />
+                            </MudItem>
 
-<MudContainer>
-    <h3 class="text-center mb-4">Module Add Page</h3>
+                            <MudItem xs="12">
+                                <MudTextField @bind-Value="model.ModuleCode"
+                                              Label="Module Code"
+                                              Required="true"
+                                              For="@(()=>model.ModuleCode)" />
+                            </MudItem>
 
-    <MudCard>
-        <MudCardContent>
-            <MudForm Model="@model" @ref="@form"
-                     Validation="@(moduleValidator.ValidateValue)"
-                     ValidationDelay="0">
-                <MudGrid>
+                            <MudItem xs="12">
+                                <MudSelect Label="Semester" @bind-Value="@model.Semester">
+                                    @foreach (var option in semesterlist)
+                                    {
+                                        <MudSelectItem Value="option">@option</MudSelectItem>
+                                    }
+                                </MudSelect>
+                            </MudItem>
 
-                    <MudItem xs="12">
-                        <MudTextField @bind-Value="model.ModuleName"
-                                      Label="Module Name"
-                                      Required="true"
-                                      For="@(()=>model.ModuleName)" />
-                    </MudItem>
+                            <MudItem xs="12">
+                                <MudTextField @bind-Value="model.ModuleCoordineter"
+                                              Label="Module Coordinator"
+                                              Required="true"
+                                              For="@(()=>model.ModuleCoordineter)" />
+                            </MudItem>
 
-                    <MudItem xs="12">
-                        <MudTextField @bind-Value="model.ModuleCode"
-                                      Label="Module Code"
-                                      Required="true"
-                                      For="@(()=>model.ModuleCode)" />
-                    </MudItem>
+                            <MudItem xs="12">
+                                <MudTextField @bind-Value="model.Lectures"
+                                              Label="Lecturer"
+                                              Required="true"
+                                              For="@(()=>model.Lectures)" />
+                            </MudItem>
+                        </MudGrid>
+                    </MudForm>
+                </MudCardContent>
 
-                    <MudItem xs="12">
-                        <MudTextField @bind-Value="model.Semester"
-                                      Label="Semester"
-                                      Required="true"
-                                      For="@(()=>model.Semester)" />
-                    </MudItem>
+                <MudCardActions>
+                    <MudButton Variant="Variant.Filled"
+                               Color="Color.Primary"
+                               Class="ml-auto"
+                               OnClick="@(async () => await Submit())">Add</MudButton>
+                </MudCardActions>
+            </MudCard>
+        </MudContainer>
+    </div>
 
-                    <MudItem xs="12">
-                        <MudTextField @bind-Value="model.ModuleCoordineter"
-                                      Label="Module Coordinator"
-                                      Required="true"
-                                      For="@(()=>model.ModuleCoordineter)" />
-                    </MudItem>                    
-
-                    <MudItem xs="12">
-                        <MudTextField @bind-Value="model.Lectures"
-                                      Label="Lecturer"
-                                      Required="true"
-                                      For="@(()=>model.Lectures)" />
-                    </MudItem>
-
-
-                </MudGrid>
-            </MudForm>
-        </MudCardContent>
-
-        <MudCardActions>
-            <MudButton Variant="Variant.Filled"
-                       Color="Color.Primary"
-                       Class="ml-auto"
-                       OnClick="@(async () => await Submit())">Add</MudButton>
-        </MudCardActions>
-
-    </MudCard>
-</MudContainer>
-
-
-
+    <div class="right-column">
+        <div class="calendar">
+            <MudDatePicker PickerVariant="PickerVariant.Static" Date="@(DateTime.Today.AddDays(0))" />
+        </div>
+        <div class="carousel">
+            <MudCarousel Class="mud-width-full" Style="height:200px;" AutoCycle="false" TData="object">
+                <BulletTemplate Context="selected">
+                    <div Class="mud-button-root mud-icon-button mud-icon-button-color-inherit mud-ripple mud-ripple-icon">
+                        <span class="mud-icon-button-label">
+                            <MudIcon Icon="@(selected ? Icons.Material.Filled.CheckCircle : Icons.Material.Filled.Circle)" Color="@Color.Inherit" />
+                        </span>
+                    </div>
+                </BulletTemplate>
+                <PreviousButtonTemplate>
+                    <div Class="mud-button-root mud-icon-button mud-icon-button-color-inherit mud-ripple mud-ripple-icon">
+                        <span class="mud-icon-button-label">
+                            <MudIcon Class="mud-ripple mud-ripple-icon mud-icon-button-size-medium" Icon="@Icons.Material.Filled.SkipPrevious" Color="@Color.Inherit" />
+                        </span>
+                    </div>
+                </PreviousButtonTemplate>
+                <NextButtonTemplate>
+                    <div Class="mud-button-root mud-icon-button mud-icon-button-color-inherit mud-ripple mud-ripple-icon">
+                        <span class="mud-icon-button-label">
+                            <MudIcon Class="mud-ripple mud-ripple-icon mud-icon-button-size-medium" Icon="@Icons.Material.Filled.SkipNext" Color="@Color.Inherit" />
+                        </span>
+                    </div>
+                </NextButtonTemplate>
+                <ChildContent>
+                    <MudCarouselItem>
+                        <div class="d-flex" style="height:100%">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmCPY46dq4sYjoK2UVfGXiiLkTYcaMjOn77SZ5Doz2YRf-jSjWWYgcEt2MCTRs9zHFeSc&usqp=CAU" class="mx-auto my-auto" style="max-height:100%;" />
+                        </div>
+                    </MudCarouselItem>
+                    <MudCarouselItem>
+                        <div class="d-flex" style="height:100%">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQd_CjS7SitH0s2NB65wqJSlBKLCORt1uHUaFFk2R-4I033JKCXHN5d52SwnJR5amf4T4Q&usqp=CAU" class="mx-auto my-auto" style="max-height:100%;" />
+                        </div>
+                    </MudCarouselItem>
+                    <MudCarouselItem>
+                        <div class="d-flex" style="height:100%">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTz8uRzgWiElKr6ZRQgQUWXrwI_IgQf9UWIfA&s" class="mx-auto my-auto" style="max-height:100%;" />
+                        </div>
+                    </MudCarouselItem>
+                </ChildContent>
+            </MudCarousel>
+        </div>
+    </div>
+</div>
 
 @code {
+    private bool arrows = true;
+    private bool bullets = true;
+    private bool enableSwipeGesture = true;
+    private bool autocycle = true;
+    private Transition transition = Transition.Slide;
 
     [Parameter]
     public EventCallback onAdded { get; set; }
@@ -83,11 +135,30 @@
     ModuleModelValidator moduleValidator = new ModuleModelValidator();
     MudForm form;
 
+    private Timer timer;
+
+    TimeSpan? time = new TimeSpan(00, 45, 00);
+
+    protected override void OnInitialized()
+    {
+        timer = new Timer(UpdateRealTime, null, 0, 1000); // Update every second
+    }
+
+    private void UpdateRealTime(object state)
+    {
+        time = DateTime.Now.TimeOfDay;
+        InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        timer?.Dispose();
+    }
+
     public class ModuleModelValidator : AbstractValidator<CreateModuleRequest>
     {
         public ModuleModelValidator()
         {
-
             RuleFor(x => x.ModuleName)
                 .NotEmpty().WithMessage("Module Name is Required.")
                 .MinimumLength(3)
@@ -99,26 +170,18 @@
                 .MaximumLength(20);
 
             RuleFor(x => x.Semester)
-            .NotEmpty().WithMessage("Semester is Required.");
+                .NotEmpty().WithMessage("Semester is Required.");
 
             RuleFor(x => x.ModuleCoordineter)
                 .NotEmpty().WithMessage("Module Coordinator is Required.")
                 .MinimumLength(3)
                 .MaximumLength(20);
 
-
             RuleFor(x => x.Lectures)
-            .NotEmpty().WithMessage("Lectures is Required.")
-            .MinimumLength(3)
-            .MaximumLength(20);
-
-
-
-
-           
+                .NotEmpty().WithMessage("Lectures is Required.")
+                .MinimumLength(3)
+                .MaximumLength(20);
         }
-
-       
 
         public Func<object, string, Task<IEnumerable<string>>> ValidateValue => async (model, propertyName) =>
         {
@@ -151,8 +214,6 @@
                 {
                     Snackbar.Add("Please Check Your Connection.", MudBlazor.Severity.Error);
                 }
-
-
             }
             else
             {
@@ -165,8 +226,47 @@
         }
     }
 
-
-   
-
+    private List<string> semesterlist = new List<string> { "Semester 01", "Semester 02", "Semester 03", "Semester 04", "Semester 05", "Semester 06", "Semester 07", "Semester 08" };
 }
 
+<style>
+    .home {
+        display: flex;
+        gap: 20px; /* Add some space between the items */
+    }
+
+    .form-container {
+        flex: 1; /* Take up available space */
+    }
+
+    .right-column {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        flex: 0 0 300px; /* Fixed width for the right column */
+        max-width: 300px;
+    }
+
+    .calendar {
+        background-color: #ffffff; /* White background */
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .carousel {
+        background-color: #ffffff; /* White background */
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Make sure the calendar fits nicely */
+    .mud-picker-static {
+        width: 100%;
+    }
+
+   /*  .button-group {
+        buttonGroupStyle;
+    } */
+</style>
