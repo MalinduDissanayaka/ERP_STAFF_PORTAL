@@ -1,5 +1,52 @@
 ﻿@page "/"
-@using ERP_StudentRegistration.StudentPages
+@using ERP_StudentManagement.StudentManagementComponents
 @rendermode InteractiveServer
 
-<StudentTabs/>
+
+
+<div class="home">
+    <div class="students-list">
+        
+        <ListOfStudentsHome/>
+    </div>
+    <div class="calendar">
+        <MudDatePicker PickerVariant="PickerVariant.Static" Date="@(DateTime.Today.AddDays(0))" />
+    </div>
+</div>
+
+<style>
+    .home {
+        display: flex;
+        gap: 20px; /* Add some space between the items */
+    }
+
+        .home .students-list {
+            flex: 1; /* Take up available space */
+        }
+
+        .home .calendar {
+            flex: 0 0 300px; /* Fixed width for the calendar */
+            max-width: 300px; /* Ensure it doesn't grow too large */
+        }
+
+    /* Additional styles for the student list and calendar */
+    .students-list {
+        background-color: #f9f9f9; /* Light background */
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        overflow-y: auto; /* Enable scrolling if content overflows */
+    }
+
+    .calendar {
+        background-color: #ffffff; /* White background */
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Make sure the calendar fits nicely */
+    .mud-picker-static {
+        width: 100%;
+    }
+</style>
