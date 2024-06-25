@@ -8,7 +8,7 @@ namespace ERP.TimeTableManagement.Core.DTOs.Requests.UpdateRequests
 {
     public class UpdateModuleRequest
     {
-        public Guid Id { get; set; }
+        public Guid ModuleId { get; set; }
         public string Name { get; set; } = string.Empty;
         public string Code { get; set; } = string.Empty;
     }
