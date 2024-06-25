@@ -1,4 +1,5 @@
 ﻿@page "/lecturers-add"
+@using ClosedXML.Excel
 @using ERP_LecturersMangement.DTOs.Request
 @using MudBlazor
 @using FluentValidation
@@ -20,11 +21,8 @@
                 <h5><c>ADD LECTURERS FROM EXCEL</c></h5>
                 <InputFile @ref="fileInput" OnChange="HandleFileUpload" />
 
-                @if (teachers != null && teachers.Any())
-                {
-                    <button class="btn btn-primary" @onclick="SaveAllLecturers">Save All Lecturers</button>
-                }
 
+                <MudButton class="btn btn-primary" Variant="Variant.Filled" Color="Color.Primary" Style="width:auto" @onclick="SaveAllLecturers">Save All Lecturers</MudButton>
                 <MudCardContent>
                     <MudForm Model="@model" @ref="@form" Validation="@(lecturerValidator.ValidateValue)" ValidationDelay="0">
                         <MudGrid>
@@ -244,7 +242,7 @@
         }
     }
 
-    private async Task<List<CreateLecturerRequest>> ReadLecturersFromExcel(IBrowserFile file)
+    /*private async Task<List<CreateLecturerRequest>> ReadLecturersFromExcel(IBrowserFile file)
     {
         var lecturers = new List<CreateLecturerRequest>();
 
@@ -269,6 +267,41 @@
                                 Email = worksheet.Cells[row, 4].Value?.ToString(),
                                 Phone = worksheet.Cells[row, 5].Value?.ToString(),
                                 NationalId = worksheet.Cells[row, 6].Value?.ToString(),
+                            };
+                        lecturers.Add(model);
+                    }
+                }
+            }
+        }
+
+        return lecturers;
+    }*/
+
+    public async Task<List<CreateLecturerRequest>> ReadLecturersFromExcel(IBrowserFile file)
+    {
+        var lecturers = new List<CreateLecturerRequest>();
+
+        using (var memoryStream = new MemoryStream())
+        {
+            await file.OpenReadStream().CopyToAsync(memoryStream);
+            memoryStream.Position = 0;
+
+            using (var workbook = new XLWorkbook(memoryStream))
+            {
+                var worksheet = workbook.Worksheets.FirstOrDefault();
+
+                if (worksheet != null)
+                {
+                    foreach (var row in worksheet.RowsUsed().Skip(1)) // Skip header row
+                    {
+                        var model = new CreateLecturerRequest
+                            {
+                                FirstName = row.Cell(1).GetValue<string>(),
+                                LastName = row.Cell(2).GetValue<string>(),
+                                Department = row.Cell(3).GetValue<string>(),
+                                Email = row.Cell(4).GetValue<string>(),
+                                Phone = row.Cell(5).GetValue<string>(),
+                                NationalId = row.Cell(6).GetValue<string>(),
                             };
                         lecturers.Add(model);
                     }
