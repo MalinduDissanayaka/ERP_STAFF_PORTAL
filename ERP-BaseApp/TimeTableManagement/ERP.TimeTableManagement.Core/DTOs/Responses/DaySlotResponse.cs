@@ -8,7 +8,7 @@ namespace ERP.TimeTableManagement.Core.DTOs.Responses
 {
     public class DaySlotResponse
     {
-        public Guid DaySlotId { get; set; }
+        public Guid Id { get; set; }
         public DayOfWeek Day { get; set; }
         public Guid? TimetableId { get; set; }
         public ICollection<TimeSlotResponse> TimeSlots { get; set; } = new List<TimeSlotResponse>();

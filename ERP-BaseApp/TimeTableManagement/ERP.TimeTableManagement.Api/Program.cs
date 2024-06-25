@@ -13,7 +13,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Add AutoMapper
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());      
+builder.Services.AddAutoMapper(typeof(RequestToDomain), typeof(DomainToResponse));
 
 var app = builder.Build();
 

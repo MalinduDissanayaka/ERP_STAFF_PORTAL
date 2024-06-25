@@ -1,4 +1,4 @@
- using Microsoft.JSInterop;
+using Microsoft.JSInterop;
 
 namespace ERP_ModuleManagement
 {
