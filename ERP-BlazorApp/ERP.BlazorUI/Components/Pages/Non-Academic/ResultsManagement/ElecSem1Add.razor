@@ -7,8 +7,6 @@
 @inject NavigationManager Navigation
 @inject ISnackbar Snackbar
 
-
-
 <MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6">
     <MudTabPanel Text="Semester 1" OnClick="@(() => Navigation.NavigateTo("/ElecResultsSem1"))">
     </MudTabPanel>
@@ -56,7 +54,6 @@
 </div>
 
 
-<style>
     .my-custom-card {
         max-width: 800px;
         margin: auto;
@@ -73,8 +70,6 @@
 
 
 @code {
-
-
     private string successMessage;
     private string errorMessage;
     private InputFile fileInput;
@@ -86,8 +81,6 @@
 
     private DeieResults model = new DeieResults();
     private MudForm form;
-
-
 
     private async Task HandleFileUpload(InputFileChangeEventArgs e)
     {
@@ -157,8 +150,6 @@
 
     private async Task SaveAllElecResults()
     {
-
-
         if (elecResults != null && elecResults.Any())
         {
             bool allElecResultsSaved = true;
@@ -189,49 +180,8 @@
         }
     }
 
-    // private ICollection<NewModule> ParseModules(string modulesData)
-    // {
-    //     if (string.IsNullOrEmpty(modulesData))
-    //         return new List<NewModule>();
-
-    //     // Assuming modules are separated by comma
-    //     var modulesArray = modulesData.Split(',');
-
-    //     var modules = new List<NewModule>();
-
-    //     foreach (var module in modulesArray)
-    //     {
-    //         // Create a new instance of NewModule for each module
-    //         modules.Add(new NewModule { ModuleName = module.Trim() });
-    //     }
-
-    //     return modules;
-    // }
-
-
-
-    // over
     private void ViewResults()
     {
         Navigation.NavigateTo("/ElecResultsList1");
-    }
-
-
-
-    private async Task Submit()
-    {
-
-
-        await form.Validate();
-        if (form.IsValid)
-
-        {
-            await AddElecResultsUseCase.ExecuteAsync(model);
-            await onAdded.InvokeAsync();
-            Snackbar.Add("Elec Results added successfully", MudBlazor.Severity.Success);
-
-
-        }
-
     }
 }

@@ -242,40 +242,7 @@
         }
     }
 
-    /*private async Task<List<CreateLecturerRequest>> ReadLecturersFromExcel(IBrowserFile file)
-    {
-        var lecturers = new List<CreateLecturerRequest>();
 
-        using (var memoryStream = new MemoryStream())
-        {
-            await file.OpenReadStream().CopyToAsync(memoryStream);
-            memoryStream.Position = 0;
-
-            using (var package = new OfficeOpenXml.ExcelPackage(memoryStream))
-            {
-                var worksheet = package.Workbook.Worksheets.FirstOrDefault();
-
-                if (worksheet != null)
-                {
-                    for (int row = 2; row <= worksheet.Dimension.End.Row; row++)
-                    {
-                        var model = new CreateLecturerRequest
-                            {
-                                FirstName = worksheet.Cells[row, 1].Value?.ToString(),
-                                LastName = worksheet.Cells[row, 2].Value?.ToString(),
-                                Department = worksheet.Cells[row, 3].Value?.ToString(),
-                                Email = worksheet.Cells[row, 4].Value?.ToString(),
-                                Phone = worksheet.Cells[row, 5].Value?.ToString(),
-                                NationalId = worksheet.Cells[row, 6].Value?.ToString(),
-                            };
-                        lecturers.Add(model);
-                    }
-                }
-            }
-        }
-
-        return lecturers;
-    }*/
 
     public async Task<List<CreateLecturerRequest>> ReadLecturersFromExcel(IBrowserFile file)
     {
