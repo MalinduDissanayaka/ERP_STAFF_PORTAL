@@ -1,0 +1,26 @@
+﻿@page "/results"
+@using MudBlazor
+
+@inject ISnackbar Snackbar
+
+<MudPopoverProvider></MudPopoverProvider>
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6" @ref="tabs">
+
+    <MudTabPanel Text="Add Results" @ref="panel01">
+        <AddComResults />
+    </MudTabPanel>
+
+    <MudTabPanel Text="Results List" @ref="panel02">
+        <ListOfComResults />
+    </MudTabPanel>
+
+</MudTabs>
+
+@code {
+    private MudTabs tabs;
+    private MudTabPanel panel01;
+    private MudTabPanel panel02;
+}

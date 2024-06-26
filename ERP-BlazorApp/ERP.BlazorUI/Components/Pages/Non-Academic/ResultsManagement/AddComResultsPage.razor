@@ -1,0 +1,240 @@
+﻿@page "/ComResults"
+@using ERP_ResultManagement.DTOs.Requests
+
+@using FluentValidation
+@using System.IO
+@using MudBlazor
+
+
+
+@inject NavigationManager Navigation
+@inject ISnackbar Snackbar
+
+
+<MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6">
+    <MudTabPanel Text="Semester 1" OnClick="@(() => Navigation.NavigateTo("/ComResults"))">
+    </MudTabPanel>
+    <MudTabPanel Text="Semester 2" OnClick="@(() => Navigation.NavigateTo("/ComResultsSem2"))">
+    </MudTabPanel>
+    <MudTabPanel Text="Semester 3" OnClick="@(() => Navigation.NavigateTo("/ComResultsSem3"))">
+    </MudTabPanel>
+    <MudTabPanel Text="Semester 4" OnClick="@(() => Navigation.NavigateTo("/ComResultsSem4"))">
+    </MudTabPanel>
+    <MudTabPanel Text="Semester 5" OnClick="@(() => Navigation.NavigateTo("/ComResultsSem5"))">
+    </MudTabPanel>
+    <MudTabPanel Text="Semester 6" OnClick="@(() => Navigation.NavigateTo("/ComResultsSem6"))">
+    </MudTabPanel>
+    <MudTabPanel Text="Semester 7" OnClick="@(() => Navigation.NavigateTo("/ComResultsSem7"))">
+    </MudTabPanel>
+    <MudTabPanel Text="Semester 8" OnClick="@(() => Navigation.NavigateTo("/ComResultsSem8"))">
+    </MudTabPanel>
+</MudTabs>
+
+
+<style>
+    h2 {
+        text-align: center;
+        font-weight: bold;
+        text-decoration: underline;
+    }
+
+</style>
+
+<h2><c>COM RESULTS</c></h2>
+
+<MudCard Class="my-custom-card">
+
+
+    <h5><c>ADD RESULTS FROM EXCEL</c></h5>
+    <InputFile @ref="fileInput" OnChange="HandleFileUpload" />
+    @if (comResults != null && comResults.Any())
+    {
+        <button class="btn btn-primary" @onclick="SaveAllComResults">Save All Com Results</button>
+
+    }
+
+</MudCard>
+<div class="text-center mt-3">
+    <button class="btn btn-secondary" @onclick="ViewResults">View Results</button>
+</div>
+
+
+<style>
+    .my-custom-card {
+        max-width: 800px;
+        margin: auto;
+        padding: 50px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        background-color: #f8f9fa; /* Light gray background */
+        border: 1px solid #ced4da; /* Gray border */
+    }
+</style>
+
+
+
+
+
+@code {
+
+
+    private string successMessage;
+    private string errorMessage;
+    private InputFile fileInput;
+    private string uploadError;
+    private List<CreateComResultsRequest> createcomresultsRequest;
+
+    [Parameter]
+    public EventCallback onAdded { get; set; }
+
+    private CreateComResultsRequest model = new CreateComResultsRequest();
+    private MudForm form;
+
+
+
+    private async Task HandleFileUpload(InputFileChangeEventArgs e)
+    {
+        var file = e.File;
+
+        if (file != null)
+        {
+            try
+            {
+                createcomresultsRequest = await ReadComResultsFromExcel(file);
+
+
+            }
+            catch (Exception ex)
+            {
+                Snackbar.Add($"Error uploading file: {ex.Message}", MudBlazor.Severity.Error);
+            }
+        }
+    }
+
+    private async Task<List<CreateComResultsRequest>> ReadComResultsFromExcel(IBrowserFile file)
+    {
+        var createcomresultsrequest = new List<CreateComResultsRequest>();
+
+        using (var memoryStream = new MemoryStream())
+        {
+            await file.OpenReadStream().CopyToAsync(memoryStream);
+            memoryStream.Position = 0;
+
+            // Load the Excel package using EPPlus
+            using (var package = new OfficeOpenXml.ExcelPackage(memoryStream))
+            {
+                var worksheet = package.Workbook.Worksheets.FirstOrDefault();
+
+                if (worksheet != null)
+                {
+                    for (int row = 2; row <= worksheet.Dimension.End.Row; row++)
+                    {
+                        var model = new CreateComResultsRequest
+                            {
+                                ComId = Convert.ToInt32(worksheet.Cells[row, 1].Value),
+                                StudentName = worksheet.Cells[row, 2].Value?.ToString(),
+                                CE0001 = worksheet.Cells[row, 3].Value?.ToString(),
+                                CE0002 = worksheet.Cells[row, 4].Value?.ToString(),
+                                CE0003 = worksheet.Cells[row, 5].Value?.ToString(),
+                                CE0004 = worksheet.Cells[row, 6].Value?.ToString(),
+                                CE0005 = worksheet.Cells[row, 7].Value?.ToString(),
+                                CE0006 = worksheet.Cells[row, 8].Value?.ToString(),
+                                CE0007 = worksheet.Cells[row, 9].Value?.ToString(),
+                                CE0008 = worksheet.Cells[row, 10].Value?.ToString(),
+                                CE0009 = worksheet.Cells[row, 11].Value?.ToString(),
+                                CE0010 = worksheet.Cells[row, 12].Value?.ToString(),
+                                CE0011 = worksheet.Cells[row, 13].Value?.ToString(),
+                                CE0012 = worksheet.Cells[row, 14].Value?.ToString(),
+
+                                //modules = ParseModules(worksheet.Cells[row, 13].Value?.ToString())
+                            };
+
+                        createcomresultsrequest.Add(model);
+                    }
+                }
+            }
+        }
+
+        return createcomresultsrequest;
+    }
+
+    private async Task SaveAllComResults()
+    {
+
+
+        if (createcomresultsrequest != null && createcomresultsrequest.Any())
+        {
+            bool allComResultsSaved = true;
+
+            foreach (var createcomresultsRequest in createcomresultsrequest)
+            {
+                try
+                {
+                    await AddComResultsUseCase.ExecuteAsync(createcomresultsRequest);
+
+                }
+                catch (Exception ex)
+                {
+                    allComResultsSaved = false;
+                    Snackbar.Add($"Error saving comresults: {ex.Message}", MudBlazor.Severity.Error);
+                }
+            }
+
+            if (allComResultsSaved)
+            {
+                Snackbar.Add("All comresults saved successfully", MudBlazor.Severity.Success);
+                await Task.Delay(1500);
+                Navigation.NavigateTo("/ComResultsList");
+            }
+
+
+            StateHasChanged(); // Update the UI
+        }
+    }
+
+    // private ICollection<NewModule> ParseModules(string modulesData)
+    // {
+    //     if (string.IsNullOrEmpty(modulesData))
+    //         return new List<NewModule>();
+
+    //     // Assuming modules are separated by comma
+    //     var modulesArray = modulesData.Split(',');
+
+    //     var modules = new List<NewModule>();
+
+    //     foreach (var module in modulesArray)
+    //     {
+    //         // Create a new instance of NewModule for each module
+    //         modules.Add(new NewModule { ModuleName = module.Trim() });
+    //     }
+
+    //     return modules;
+    // }
+
+
+
+    // over
+    private void ViewResults()
+    {
+        Navigation.NavigateTo("/ComResultsList");
+    }
+
+
+
+    private async Task Submit()
+    {
+
+
+        await form.Validate();
+        if (form.IsValid)
+
+        {
+            await AddComResultsUseCase.ExecuteAsync(model);
+            await onAdded.InvokeAsync();
+            Snackbar.Add("ComResults added successfully", MudBlazor.Severity.Success);
+
+
+        }
+
+    }
+}

@@ -18,6 +18,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\ERP-LecturersMangement\ERP-LecturersMangement.csproj" />
 		<ProjectReference Include="..\ERP-ModuleManagement\ERP-ModuleManagement.csproj" />
+		<ProjectReference Include="..\ERP-ResultManagement\ERP-ResultManagement.csproj" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\ERP-StudentManagement\ERP-StudentManagement.csproj" />
@@ -29,6 +30,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\ERP-LabEquipmentManagement\ERP-LabEquipmentManagement.csproj" />
+		<ProjectReference Include="..\ERP.BlazorUI.Authentication\ERP.BlazorUI.Authentication.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

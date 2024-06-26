@@ -1,0 +1,112 @@
+﻿@page "/ComResultsList"
+@using ERP_ResultManagement.DTOs.Responses
+@using System.Net.Http.Json
+@using FluentValidation
+@using MudBlazor
+
+@inject NavigationManager NavigationManager
+
+
+@inject IDialogService DialogService
+
+
+<div style="text-align: center; margin-bottom: 0;">
+    <h2><u>COM SEMESTER 1 RESULTS LIST</u></h2>
+</div>
+
+
+<MudTable Items="@_comresults" Class="custom-table">
+    <HeaderContent>
+        <MudTh >ID</MudTh>
+        <MudTh>Full Name</MudTh>
+        <MudTh>CE0001</MudTh>
+        <MudTh>CE0002</MudTh>
+        <MudTh>CE0003</MudTh>
+        <MudTh>CE0004</MudTh>
+      
+
+    </HeaderContent>
+    <RowTemplate>
+            <MudTd DataLabel="id">@context.ComId</MudTd>
+            <MudTd DataLabel="fullname">@context.StudentName</MudTd>
+            <MudTd DataLabel="ce0001">@context.CE0001</MudTd>
+            <MudTd DataLabel="ce0002">@context.CE0002</MudTd>     
+            <MudTd DataLabel="ce0003">@context.CE0003</MudTd>
+            <MudTd DataLabel="ce0004">@context.CE0004</MudTd>
+
+
+
+        </RowTemplate>
+        <PagerContent>
+            <MudTablePager />
+        </PagerContent>
+    </MudTable>
+
+    <style>
+        .custom-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+            .custom-table th, .custom-table td {
+                border: 1px solid #ddd;
+                padding: 8px;
+            }
+
+            .custom-table th {
+                background-color: #f6efef;
+                color: #000000;
+                font-size: large;
+                font-weight: 600;
+                font-family: sans-serif;
+            }
+
+            .custom-table td {
+                background-color: #54a3c2;
+                color: #000000;
+            }
+    </style>
+
+
+@code {
+    private List<GetComResultsResponse> _comresults = new List<GetComResultsResponse>();
+
+    [Parameter]
+
+    public string SearchTerm { get; set; } = string.Empty;
+
+    // protected override async Task OnInitializedAsync()
+    // {
+    //     _teachers = (await ViewTeacherByNameUseCase.ExecuteAsync("")).ToList();
+
+    // }
+
+    // protected override async Task OnParametersSetAsync()
+    // {
+    //     _teachers = (await ViewTeacherByNameUseCase.ExecuteAsync(SearchTerm)).ToList();
+
+    // }
+
+    
+
+    
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadComResults();
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await LoadComResults();
+    }
+
+    private async Task LoadComResults()
+    {
+        _comresults = (await ViewComResultsByNameUseCase.ExecuteAsync(SearchTerm)).ToList();
+    }
+
+
+
+}
