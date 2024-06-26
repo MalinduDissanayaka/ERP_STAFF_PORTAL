@@ -1,5 +1,5 @@
-using System;
-using ERP.ResultManagement.Core.Entities;
+﻿using System;
+
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 
 
-namespace ERP.ResultManagement.Core.DTOs.Response
+namespace ERP_ResultManagement.DTOs.Requests
 {
-    public class GetDeieResultsByIdResponse
+    public class CreateDeieResultsRequest
     {
-        public Guid DEIEid { get; set; }
+        public int DEIEid { get; set; }
         public string StudentName { get; set; } = string.Empty;
         public string? EE0001 { get; set; }
         public string? EE0002 { get; set; }
@@ -24,6 +24,6 @@ namespace ERP.ResultManagement.Core.DTOs.Response
         public string? EE0009 { get; set; }
         public string? EE0010 { get; set; }
         public string? EE0011 { get; set; }
-        public string? EE0012 { get; set; }  
+        public string? EE0012 { get; set; }
     }
 }

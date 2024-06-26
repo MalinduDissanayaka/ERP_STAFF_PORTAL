@@ -19,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ERP-LecturersMangement", "E
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ERP-ModuleManagement", "ERP-ModuleManagement\ERP-ModuleManagement.csproj", "{B3F63BE0-A79E-4F41-AB73-8B22808FA1A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ERP-ResultManagement", "ERP-ResultManagement\ERP-ResultManagement.csproj", "{FB8C738E-91C6-4A00-A3DE-35A5029C3E17}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ERP-ResultManagement", "ERP-ResultManagement\ERP-ResultManagement.csproj", "{FB8C738E-91C6-4A00-A3DE-35A5029C3E17}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
