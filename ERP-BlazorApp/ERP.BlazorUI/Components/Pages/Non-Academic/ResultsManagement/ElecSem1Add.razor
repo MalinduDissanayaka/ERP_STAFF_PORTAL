@@ -1,0 +1,237 @@
+﻿@page "/ElecResultsSem1"
+@using ERP_ResultManagement
+@using FluentValidation
+@using System.IO
+@using MudBlazor
+
+@inject NavigationManager Navigation
+@inject ISnackbar Snackbar
+
+
+
+<MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6">
+    <MudTabPanel Text="Semester 1" OnClick="@(() => Navigation.NavigateTo("/ElecResultsSem1"))">
+    </MudTabPanel>
+    <MudTabPanel Text="Semester 2" OnClick="@(() => Navigation.NavigateTo("/ElecResultsSem2"))">
+    </MudTabPanel>
+    <MudTabPanel Text="Semester 3" OnClick="@(() => Navigation.NavigateTo("/ElecResultsSem3"))">
+    </MudTabPanel>
+    <MudTabPanel Text="Semester 4" OnClick="@(() => Navigation.NavigateTo("/ElecResultsSem4"))">
+    </MudTabPanel>
+    <MudTabPanel Text="Semester 5" OnClick="@(() => Navigation.NavigateTo("/ElecResultsSem5"))">
+    </MudTabPanel>
+    <MudTabPanel Text="Semester 6" OnClick="@(() => Navigation.NavigateTo("/ElecResultsSem6"))">
+    </MudTabPanel>
+    <MudTabPanel Text="Semester 7" OnClick="@(() => Navigation.NavigateTo("/ElecResultsSem7"))">
+    </MudTabPanel>
+    <MudTabPanel Text="Semester 8" OnClick="@(() => Navigation.NavigateTo("/ElecResultsSem8"))">
+    </MudTabPanel>
+</MudTabs>
+
+<style>
+    h2 {
+        text-align: center;
+        font-weight: bold;
+        text-decoration: underline;
+    }
+
+</style>
+
+<h2><c>DEIE RESULTS</c></h2>
+
+<MudCard Class="my-custom-card">
+
+
+    <h5><c>ADD RESULTS FROM EXCEL</c></h5>
+    <InputFile @ref="fileInput" OnChange="HandleFileUpload" />
+    @if (elecResults != null && elecResults.Any())
+    {
+        <button class="btn btn-primary" @onclick="SaveAllElecResults">Save All DEIE Results</button>
+
+    }
+
+</MudCard>
+<div class="text-center mt-3">
+    <button class="btn btn-secondary" @onclick="ViewResults">View Results</button>
+</div>
+
+
+<style>
+    .my-custom-card {
+        max-width: 800px;
+        margin: auto;
+        padding: 50px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        background-color: #f8f9fa; /* Light gray background */
+        border: 1px solid #ced4da; /* Gray border */
+    }
+</style>
+
+
+
+
+
+@code {
+
+
+    private string successMessage;
+    private string errorMessage;
+    private InputFile fileInput;
+    private string uploadError;
+    private List<DeieResults> elecResults;
+
+    [Parameter]
+    public EventCallback onAdded { get; set; }
+
+    private DeieResults model = new DeieResults();
+    private MudForm form;
+
+
+
+    private async Task HandleFileUpload(InputFileChangeEventArgs e)
+    {
+        var file = e.File;
+
+        if (file != null)
+        {
+            try
+            {
+                elecResults = await ReadElecResultsFromExcel(file);
+
+
+            }
+            catch (Exception ex)
+            {
+                Snackbar.Add($"Error uploading file: {ex.Message}", MudBlazor.Severity.Error);
+            }
+        }
+    }
+
+    private async Task<List<DeieResults>> ReadElecResultsFromExcel(IBrowserFile file)
+    {
+        var elecresults = new List<DeieResults>();
+
+        using (var memoryStream = new MemoryStream())
+        {
+            await file.OpenReadStream().CopyToAsync(memoryStream);
+            memoryStream.Position = 0;
+
+            // Load the Excel package using EPPlus
+            using (var package = new OfficeOpenXml.ExcelPackage(memoryStream))
+            {
+                var worksheet = package.Workbook.Worksheets.FirstOrDefault();
+
+                if (worksheet != null)
+                {
+                    for (int row = 2; row <= worksheet.Dimension.End.Row; row++)
+                    {
+                        var model = new DeieResults
+                            {
+                                DEIEid = Convert.ToInt32(worksheet.Cells[row, 1].Value),
+                                StudentName = worksheet.Cells[row, 2].Value?.ToString(),
+                                EE0001 = worksheet.Cells[row, 3].Value?.ToString(),
+                                EE0002 = worksheet.Cells[row, 4].Value?.ToString(),
+                                EE0003 = worksheet.Cells[row, 5].Value?.ToString(),
+                                EE0004 = worksheet.Cells[row, 6].Value?.ToString(),
+                                EE0005 = worksheet.Cells[row, 7].Value?.ToString(),
+                                EE0006 = worksheet.Cells[row, 8].Value?.ToString(),
+                                EE0007 = worksheet.Cells[row, 9].Value?.ToString(),
+                                EE0008 = worksheet.Cells[row, 10].Value?.ToString(),
+                                EE0009 = worksheet.Cells[row, 11].Value?.ToString(),
+                                EE0010 = worksheet.Cells[row, 12].Value?.ToString(),
+                                EE0011 = worksheet.Cells[row, 13].Value?.ToString(),
+                                EE0012 = worksheet.Cells[row, 14].Value?.ToString(),
+
+                                //modules = ParseModules(worksheet.Cells[row, 13].Value?.ToString())
+                            };
+
+                        elecresults.Add(model);
+                    }
+                }
+            }
+        }
+
+        return elecresults;
+    }
+
+    private async Task SaveAllElecResults()
+    {
+
+
+        if (elecResults != null && elecResults.Any())
+        {
+            bool allElecResultsSaved = true;
+
+            foreach (var elecResults in elecResults)
+            {
+                try
+                {
+                    await AddElecResultsUseCase.ExecuteAsync(elecResults);
+
+                }
+                catch (Exception ex)
+                {
+                    allElecResultsSaved = false;
+                    Snackbar.Add($"Error saving elecresults: {ex.Message}", MudBlazor.Severity.Error);
+                }
+            }
+
+            if (allElecResultsSaved)
+            {
+                Snackbar.Add("All elecresults saved successfully", MudBlazor.Severity.Success);
+                await Task.Delay(1500);
+                Navigation.NavigateTo("/ElecResultsList1");
+            }
+
+
+            StateHasChanged(); // Update the UI
+        }
+    }
+
+    // private ICollection<NewModule> ParseModules(string modulesData)
+    // {
+    //     if (string.IsNullOrEmpty(modulesData))
+    //         return new List<NewModule>();
+
+    //     // Assuming modules are separated by comma
+    //     var modulesArray = modulesData.Split(',');
+
+    //     var modules = new List<NewModule>();
+
+    //     foreach (var module in modulesArray)
+    //     {
+    //         // Create a new instance of NewModule for each module
+    //         modules.Add(new NewModule { ModuleName = module.Trim() });
+    //     }
+
+    //     return modules;
+    // }
+
+
+
+    // over
+    private void ViewResults()
+    {
+        Navigation.NavigateTo("/ElecResultsList1");
+    }
+
+
+
+    private async Task Submit()
+    {
+
+
+        await form.Validate();
+        if (form.IsValid)
+
+        {
+            await AddElecResultsUseCase.ExecuteAsync(model);
+            await onAdded.InvokeAsync();
+            Snackbar.Add("Elec Results added successfully", MudBlazor.Severity.Success);
+
+
+        }
+
+    }
+}
