@@ -1,13 +1,14 @@
-﻿@page "/ElecResultsSem1"
+﻿@page "/ElecResultsSem4"
 @using ERP_ResultManagement.DTOs.Requests
-@using FluentValidation
-@using System.IO
-@using MudBlazor
-@using Microsoft.AspNetCore.Components.Forms
 @using ClosedXML.Excel
+@using MudBlazor
+@using FluentValidation
 @using System.Net.Http.Json
 @using System.Text
 @using System.Text.Json
+@using OfficeOpenXml
+@using Microsoft.AspNetCore.Components.Forms
+
 
 @inject NavigationManager Navigation
 @inject ISnackbar Snackbar
@@ -39,6 +40,7 @@
         text-decoration: underline;
         margin-bottom: 20px;
     }
+
     h5 {
         text-align: center;
         font-weight: bold;
@@ -118,7 +120,6 @@
         background-color: #f8f9fa; /* Light gray background */
         border: 1px solid #ced4da; /* Gray border */
     }
-   
 </style>
 
 <h2><c>DEIE RESULTS</c></h2>
@@ -127,9 +128,9 @@
     <h5><c>ADD LECTURERS FROM EXCEL</c></h5>
     <InputFile @ref="fileInput" OnChange="HandleFileUpload" />
     <MudButton class=" btn-primary" Variant="Variant.Filled" Color="Color.Primary" Style="width:auto" @onclick="SaveAllResults">SAVE</MudButton>
-  @*   @if (elecResults != null && elecResults.Any())
+    @*   @if (elecResults != null && elecResults.Any())
     {
-        <MudButton class="btn btn-primary" Variant="Variant.Filled" Color="Color.Primary" Style="width:auto" @onclick="SaveAllResults">Save All Results</MudButton>
+    <MudButton class="btn btn-primary" Variant="Variant.Filled" Color="Color.Primary" Style="width:auto" @onclick="SaveAllResults">Save All Results</MudButton>
     } *@
 </MudCard>
 
